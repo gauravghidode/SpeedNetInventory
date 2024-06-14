@@ -1,5 +1,4 @@
 import Account from "../models/account.js";
-import {conn} from '../index.js'
 import PhoneNo from "../models/phoneNo.js";
 
 export const createAccount = async(req, res) =>{
