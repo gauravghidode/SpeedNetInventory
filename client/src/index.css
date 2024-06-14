@@ -4,6 +4,6 @@
 
 @layer components{
   .align-elements{
-    @apply mx-auto max-w-6xl px-8
+    @apply mx-auto w-11/12 px-8
   }
 }
