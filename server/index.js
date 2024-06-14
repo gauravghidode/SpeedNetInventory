@@ -18,7 +18,7 @@ mongoose.connect(MONGODB_URL)
 
 const app = express();
 app.use(express.json());
-app.use(cors({credentials: true, origin: 'https://speednetfsm.vercel.app'}));
+app.use(cors({credentials: true, origin: process.env.ORIGIN_URL}));
 app.use(cookieParser());
 
 app.listen(process.env.PORT||4000, ()=>{
