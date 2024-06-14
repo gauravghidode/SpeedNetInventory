@@ -50,35 +50,37 @@ const Main = () => {
   },[]);
   return (
     <>
-    <button className='btn btn-primary' onClick={onDownload}>Download Excel File</button>
+    <button className='btn bg-slate-400' onClick={onDownload}>Download Excel File</button>
       {
         mainArr ?
           <div>
             <div className="overflow-x-auto">
-              <table className="table" ref={tableRef}>
+              <table className="table table-pin-cols table-zebra" ref={tableRef}>
                 {/* head */}
                 <thead>
-                  <tr>
+                  <tr className=' font-bold text-base text-black'>
                     <th>Account No</th>
                     <th>Customer</th>
+                    <th>Phone No</th>
                     <th>ICCId</th>
-                    <th>Vendor</th>
+                    <th>Plan Type</th>
+                    <th>Supplier</th>
                     <th>Activation date</th>
                     <th>Recurring Status</th>
-                    <th>Account Status</th>
-                    <th>Phone No</th>
+                    
                     <th></th>
                   </tr>
-                  <tr>
+                  <tr className=''>
 
-                    <th><input className='input input-bordered input-sm input-primary' type="text" onChange={(e)=>setMainArr(arr.filter((tuple)=>tuple.newAccount.accountNo.toString().startsWith(e.target.value)))}/></th>
-                    <th><input className='input input-bordered input-sm input-primary' type="text" onChange={(e)=>setMainArr(arr.filter((tuple)=>tuple.newAccount.customerFName.includes(e.target.value)))}/></th>
-                    <th><input className='input input-bordered input-sm input-primary' type="text" onChange={(e)=>setMainArr(arr.filter((tuple)=>tuple.newICCID?.ICCID.toString().startsWith(e.target.value)))}/></th>
-                    <th><input className='input input-bordered input-sm input-primary' type="text" onChange={(e)=>setMainArr(arr.filter((tuple)=>tuple.vendor.vendorName.includes(e.target.value)))}/></th>
-                    <th>Activation date</th>
-                    <th>Recurring Status</th>
-                    <th>Account Status</th>
-                    <th><input className='input input-bordered input-sm input-primary' type="text" onChange={(e)=>setMainArr(arr.filter((tuple)=>tuple.phoneNo.toString().startsWith(e.target.value)))}/></th>
+                    <th><input className='input input-bordered input-primary input-sm w-full' type="text" onChange={(e)=>setMainArr(arr.filter((tuple)=>tuple.newAccount.accountNo.toString().startsWith(e.target.value)))}/></th>
+                    <th><input className='input input-bordered input-sm input-primary w-full' type="text" onChange={(e)=>setMainArr(arr.filter((tuple)=>tuple.newAccount.customerFName.includes(e.target.value)))}/></th>
+                    <th><input className='input input-bordered input-sm input-primary w-full' type="text" onChange={(e)=>setMainArr(arr.filter((tuple)=>tuple.phoneNo.toString().startsWith(e.target.value)))}/></th>
+                    <th><input className='input input-bordered input-sm input-primary w-full' type="text" onChange={(e)=>setMainArr(arr.filter((tuple)=>tuple.ICCID.toString().startsWith(e.target.value)))}/></th>
+                    <th></th>
+                    <th><input className='input input-bordered input-sm input-primary w-full' type="text" onChange={(e)=>setMainArr(arr.filter((tuple)=>tuple.vendor.vendorName.includes(e.target.value)))}/></th>
+                    
+                    <th></th>
+                    <th></th>
                     <th></th>
                   </tr>
                 </thead>
@@ -88,13 +90,15 @@ const Main = () => {
                   <tr key={Tuple._id}>
                     <th>{Tuple?.newAccount?.accountNo}</th>
                     <td>{Tuple?.newAccount?.customerFName} {Tuple?.newAccount?.customerLName}</td>
+                    <td>{Tuple.phoneNo}</td>
                     <td>{Tuple.ICCID}</td>
+                    <td>{Tuple.planType}</td>
                     <td>{Tuple.vendor.vendorName}</td>
     
                     <td>{Tuple.date}</td>
                     <td>{Tuple.recurringStatus}</td>
-                    <td>{Tuple.accountStatus}</td>
-                    <td>{Tuple.phoneNo}</td>
+                    
+                    
                     <td><Link to={`/accounts/${Tuple.newAccount._id}`} className= 'link'>Portal</Link></td>
                   </tr>
                   ))
