@@ -16,8 +16,6 @@ mongoose.connect(MONGODB_URL)
     .then(console.log("connected to mongodb"))
     .catch((e)=>console.log(e));
 
-export const conn = mongoose.connection;
-
 const app = express();
 app.use(express.json());
 app.use(cors({credentials: true, origin: true}));
