@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import axios from 'axios'
 import { useState } from 'react'
-import { getVendors } from '../../../server/controllers/cardController'
 import Select from 'react-select';
 import { useSelector } from 'react-redux'
 import DatePicker from 'react-datepicker'
