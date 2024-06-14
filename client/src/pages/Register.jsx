@@ -5,6 +5,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import { useState } from 'react'
 import axios from 'axios'
 import { ToastContainer, toast } from 'react-toastify';
+const BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
 
 
 const Register = () => {
@@ -22,7 +23,7 @@ const Register = () => {
       setLoading(true);
       const response = await axios({
         method: 'post',
-        url: 'http://localhost:4000/v1/auth/register',
+        url: `${BASE_URL}/v1/auth/register`,
         data: formData
       });
       console.log(response);

@@ -8,6 +8,7 @@ import { ToastContainer, toast } from 'react-toastify'
 import { loginFailure, loginStart, loginSuccess } from '../redux/userSlice'
 import { useDispatch, useSelector } from 'react-redux'
 import OAuth from '../components/OAuth'
+const BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -25,7 +26,7 @@ const Login = () => {
       dispatch(loginStart());
       const response = await axios({
         method: 'post',
-        url: 'http://localhost:4000/v1/auth/login',
+        url: `${BASE_URL}/v1/auth/login`,
         data: formData,
         withCredentials: true
       });

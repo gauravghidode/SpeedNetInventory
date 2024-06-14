@@ -2,8 +2,9 @@ import React, { useEffect } from 'react'
 import { useState } from 'react';
 import { toast } from 'react-toastify';
 import axios from 'axios';
-const BASE_URL = 'http://localhost:4000'
 import { Link } from 'react-router-dom';
+
+const BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
 
 const Customers = () => {
 

@@ -4,6 +4,7 @@ import { toast } from 'react-toastify'
 import axios from 'axios'
 import { useState } from 'react'
 import moment from 'moment';
+const BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
 
 const Inventory = () => {
 
@@ -16,7 +17,7 @@ const Inventory = () => {
     try{
       const response = await axios({
         method: 'get',
-        url: `http://localhost:4000/v1/account/checkAccount/${newAccountNo}`,
+        url: `${BASE_URL}/v1/account/checkAccount/${newAccountNo}`,
       });
       // console.log(response);
       toast.success('Account holder: ' + response?.data.customerFName + ' ' + response?.data?.customerLName);
@@ -46,7 +47,7 @@ const Inventory = () => {
     try{
       const response = await axios({
         method: 'put',
-        url: `http://localhost:4000/v1/phoneNo/addConnection/${id}`,
+        url: `${BASE_URL}/v1/phoneNo/addConnection/${id}`,
         data: {
           updatedICCID: newICCID,
           updatedAccountNo: newAccountNo
@@ -70,7 +71,7 @@ const Inventory = () => {
     try{
       const response = await axios({
         method: 'get',
-        url: `http://localhost:4000/v1/phoneNo/getAllPhoneNo`,
+        url: `${BASE_URL}/v1/phoneNo/getAllPhoneNo`,
       });
       // console.log(response);
       setMainArr(response.data);

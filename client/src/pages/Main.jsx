@@ -7,6 +7,7 @@ import { useState } from 'react'
 import { useDownloadExcel} from 'react-export-table-to-excel'
 import { useRef } from 'react'
 import BasicTable from '../components/BasicTable'
+const BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
 
 const Main = () => {
   
@@ -24,7 +25,7 @@ const Main = () => {
     try{
       const response = await axios({
         method: 'get',
-        url: `http://localhost:4000/v1/phoneNo/getAllActiveConnections`,
+        url: `${BASE_URL}/v1/phoneNo/getAllActiveConnections`,
         // url: `http://localhost:4000/v1/account/getAllAccounts`,
       });
       console.log(response);

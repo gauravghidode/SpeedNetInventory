@@ -8,6 +8,7 @@ import Select from 'react-select';
 import { useSelector } from 'react-redux'
 import DatePicker from 'react-datepicker'
 import * as XLSX from 'xlsx';
+const BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
 
 
 const Vendor = () => {
@@ -35,7 +36,7 @@ const Vendor = () => {
     try {
       const response = await axios({
         method: 'put',
-        url: `http://localhost:4000/v1/phoneNo/update/${id}`,
+        url: `${BASE_URL}/v1/phoneNo/update/${id}`,
         data: {
           updatedICCID: newICCID,
           updatedAccount: newAccount
@@ -59,7 +60,7 @@ const Vendor = () => {
       setFormData({ ...formData, lastUser: currentUser._id, vendor: data.value });
       const response = await axios({
         method: 'get',
-        url: `http://localhost:4000/v1/phoneNo/getVendorPhoneNo/${data.value}`,
+        url: `${BASE_URL}/v1/phoneNo/getVendorPhoneNo/${data.value}`,
       });
       console.log(response);
       setMainArr(response.data);
@@ -75,7 +76,7 @@ const Vendor = () => {
     try {
       const response = await axios({
         method: 'get',
-        url: `http://localhost:4000/v1/card/vendors`,
+        url: `${BASE_URL}/v1/card/vendors`,
       });
       console.log(response);
       setVendors(response.data);
@@ -91,7 +92,7 @@ const Vendor = () => {
     try {
       const response = await axios({
         method: 'post',
-        url: `http://localhost:4000/v1/phoneNo/add`,
+        url: `${BASE_URL}/v1/phoneNo/add`,
         data: formData
       });
       console.log(response);

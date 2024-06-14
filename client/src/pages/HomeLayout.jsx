@@ -12,6 +12,7 @@ import Account from './Account'
 import Dealers from './Dealers'
 import Customers from './Customers'
 import LeftSideBar from '../components/LeftSideBar'
+const BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
 
 const HomeLayout = () => {
   return (

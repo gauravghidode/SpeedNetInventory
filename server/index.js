@@ -23,8 +23,8 @@ app.use(express.json());
 app.use(cors({credentials: true, origin: true}));
 app.use(cookieParser());
 
-app.listen(4000, ()=>{
-    console.log("server running on port 4000");
+app.listen(process.env.PORT||4000, ()=>{
+    console.log(`server running on port ${process.env.PORT}`);
 });
 
 app.get('/', (req, res)=>{

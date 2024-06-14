@@ -7,6 +7,7 @@ import { useDispatch } from 'react-redux';
 import { useState } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
+const BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
 
 
 const Profile = () => {
@@ -32,7 +33,7 @@ const Profile = () => {
           const response = await axios({
             method: 'post',
             // url: `http://localhost:4000/v1/user/update/66649ca26f5308e86e4a375c`,
-            url: `http://localhost:4000/v1/user/update/${currentUser._id}`,
+            url: `${BASE_URL}/v1/user/update/${currentUser._id}`,
             data: formData,
             withCredentials: true
           });
