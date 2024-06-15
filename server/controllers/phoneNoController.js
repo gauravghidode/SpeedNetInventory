@@ -132,11 +132,11 @@ export const addConnection = async (req, res) => {
                     const resp = await PhoneNo.updateMany({newAccount: account._id},{accountStatus:'inactive'});
                     console.log(resp);
                     await PhoneNo.findByIdAndUpdate(req.params.id, {ICCID: updatedICCID, newAccount: account._id, lastUser: lastUser, accountStatus:'active'});
-                    await Account.findByIdAndUpdate(account._id, {PhoneNo: req.params.id});
+                    await Account.findByIdAndUpdate(account._id, {phoneNo: req.params.id});
                 }
                 else{
                     await PhoneNo.findByIdAndUpdate(req.params.id, {ICCID: updatedICCID, newAccount: account._id, lastUser, accountStatus:'active'});
-                    await Account.findByIdAndUpdate(account._id, {PhoneNo: req.params.id, connnectionCount: 1});
+                    await Account.findByIdAndUpdate(account._id, {phoneNo: req.params.id, connnectionCount: 1});
                 }
                 res.status(200).json({success:true, message: "Connection assigned successfully to Customer"})
             }

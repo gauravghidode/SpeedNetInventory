@@ -149,15 +149,6 @@ export const updateAccount = async(req, res) =>{
     try{
         const {customerFName, email, contact, street, city, zip, role, country} = req.body;
         console.log(req.body);
-        
-        // if(phoneNo && phoneNo !== ""){
-        //     const phoneNo = PhoneNo.findOne({phoneNo: phoneNo, accountStatus: 'inactive'});
-        //     if(phoneNo){
-        //         await PhoneNo.findByIdAndUpdate(phoneNo._id, {accountStatus: 'active', newAccount:req.params.id});
-        //         await Account.findByIdAndUpdate(req.params.id, {phoneNo: phoneNo._id, connnectionCount:})
-        //     }
-        // }
-       
         const updatedAccount = await Account.findByIdAndUpdate(req.params.id, {customerFName, email, contact, address:{street, city, country, zip}, role}, {new: true});
         res.status(200).json(updatedAccount);
     }

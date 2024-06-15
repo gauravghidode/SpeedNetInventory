@@ -55,7 +55,7 @@ const Main = () => {
         mainArr ?
           <div>
             <div className="overflow-x-auto">
-              <table className="table table-pin-cols table-zebra" ref={tableRef}>
+              <table className="table table-pin-rows table-pin-cols table-zebra" ref={tableRef}>
                 {/* head */}
                 <thead>
                   <tr className=' font-bold text-base text-black'>
