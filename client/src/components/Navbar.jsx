@@ -44,7 +44,7 @@ const Navbar = () => {
                         <li><NavLink to='/customer'>Customers</NavLink></li>
                     </ul>
                 </div> 
-                <NavLink to='/' className='lg:flex btn btn-primary text-3xl items-center'>SpeedNet</NavLink>
+                <NavLink to='/' className='lg:flex btn btn-primary text-3xl items-center'>SpeedNet FSM</NavLink>
 
             </div>
             <div className="navbar-center hidden lg:flex">

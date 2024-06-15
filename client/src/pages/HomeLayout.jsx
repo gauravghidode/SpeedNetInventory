@@ -12,6 +12,7 @@ import Account from './Account'
 import Dealers from './Dealers'
 import Customers from './Customers'
 import LeftSideBar from '../components/LeftSideBar'
+import VendorPage from './VendorPage'
 const BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
 
 const HomeLayout = () => {
@@ -23,7 +24,7 @@ const HomeLayout = () => {
         <section className='align-elements py-5'>
             <Routes>
                 <Route path='about' element={<About></About>}></Route>
-                <Route path='vendor' element={<Vendor></Vendor>}></Route>
+                <Route path='vendor' element={<VendorPage></VendorPage>}></Route>
                 <Route path='dealer' element={<Dealers></Dealers>}></Route>
                 <Route path='customer' element={<Customers></Customers>}></Route>
                 <Route path='main' element={<Main></Main>}></Route>
@@ -32,6 +33,7 @@ const HomeLayout = () => {
                     <Route path='profile' element={<Profile></Profile>}></Route>
                 </Route>
                 <Route path='accounts/:accno' element={<Account></Account>}></Route>
+                <Route path='vendor/:id' element={<Vendor></Vendor>}></Route>
                 
             </Routes>
         </section>

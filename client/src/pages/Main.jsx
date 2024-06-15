@@ -61,6 +61,7 @@ const Main = () => {
                   <tr className=' font-bold text-base text-black'>
                     <th>Account No</th>
                     <th>Customer</th>
+                    <th>Role</th>
                     <th>Phone No</th>
                     <th>ICCId</th>
                     <th>Plan Type</th>
@@ -74,6 +75,7 @@ const Main = () => {
 
                     <th><input className='input input-bordered input-primary input-sm w-full' type="text" onChange={(e)=>setMainArr(arr.filter((tuple)=>tuple.newAccount.accountNo.toString().startsWith(e.target.value)))}/></th>
                     <th><input className='input input-bordered input-sm input-primary w-full' type="text" onChange={(e)=>setMainArr(arr.filter((tuple)=>tuple.newAccount.customerFName.includes(e.target.value)))}/></th>
+                    <th></th>
                     <th><input className='input input-bordered input-sm input-primary w-full' type="text" onChange={(e)=>setMainArr(arr.filter((tuple)=>tuple.phoneNo.toString().startsWith(e.target.value)))}/></th>
                     <th><input className='input input-bordered input-sm input-primary w-full' type="text" onChange={(e)=>setMainArr(arr.filter((tuple)=>tuple.ICCID.toString().startsWith(e.target.value)))}/></th>
                     <th></th>
@@ -90,6 +92,7 @@ const Main = () => {
                   <tr key={Tuple._id}>
                     <th>{Tuple?.newAccount?.accountNo}</th>
                     <td>{Tuple?.newAccount?.customerFName} {Tuple?.newAccount?.customerLName}</td>
+                    <td>{Tuple?.role}</td>
                     <td>{Tuple.phoneNo}</td>
                     <td>{Tuple.ICCID}</td>
                     <td>{Tuple.planType}</td>

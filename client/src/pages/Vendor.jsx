@@ -7,15 +7,17 @@ import Select from 'react-select';
 import { useSelector } from 'react-redux'
 import DatePicker from 'react-datepicker'
 import * as XLSX from 'xlsx';
+import { useParams } from 'react-router-dom'
 const BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
 
 
 const Vendor = () => {
-  const [date, setData] = useState()
+  const {id} = useParams();
+
   const [mainArr, setMainArr] = useState([]);
-  const [vendors, setVendors] = useState([]);
+  
   const [vendor, setVendor] = useState(undefined);
-  const [vendorId, setVendorId] = useState(undefined);
+  const vendorId = id;
   const [formData, setFormData] = useState({});
   const optionList = [];
   const { currentUser } = useSelector((state) => state.user);
@@ -52,14 +54,12 @@ const Vendor = () => {
 
 
 
-  async function fetchMain(data) {
-    setVendor(data.label);
-    setVendorId(data.value);
+  async function fetchMain() {
     try {
-      setFormData({ ...formData, lastUser: currentUser._id, vendor: data.value });
+      setFormData({ ...formData, lastUser: currentUser._id, vendor: vendorId});
       const response = await axios({
         method: 'get',
-        url: `${BASE_URL}/v1/phoneNo/getVendorPhoneNo/${data.value}`,
+        url: `${BASE_URL}/v1/phoneNo/getVendorPhoneNo/${vendorId}`,
       });
       console.log(response);
       setMainArr(response.data);
@@ -71,20 +71,7 @@ const Vendor = () => {
 
   }
 
-  async function getVendors() {
-    try {
-      const response = await axios({
-        method: 'get',
-        url: `${BASE_URL}/v1/card/vendors`,
-      });
-      console.log(response);
-      setVendors(response.data);
-      // toast.success('');
-    }
-    catch (e) {
-      toast.error("Something went wrong in fetching vendor list " + e.message);
-    }
-  }
+  
 
   async function addEntry() {
     setFormData({ ...formData, vendor: vendorId });
@@ -106,18 +93,12 @@ const Vendor = () => {
     }
   }
 
+  console.log(mainArr);
   useEffect(() => {
-    // fetchMain();
-    getVendors();
+    fetchMain();
   }, []);
 
-  for (var i = 0; i < vendors.length; i++) {
-    let obj = {
-      label: vendors.at(i).vendorName,
-      value: vendors.at(i)._id,
-    }
-    optionList.push(obj);
-  }
+
 
   // function handleFileUpload(e){
   //   const reader = new FileReader();
@@ -136,12 +117,11 @@ const Vendor = () => {
   return (
     <>
       {/* <input type="file" onChange={handleFileUpload} /> */}
-      <Select options={optionList} placeholder="Select Vendor" defaultValue='' onChange={fetchMain} isSearchable={true} />
       {
         mainArr ?
           <div>
             {
-              vendor === 'AT&T' &&
+            
               <div className="overflow-x-auto">
                 <table className="table">
                   {/* head */}

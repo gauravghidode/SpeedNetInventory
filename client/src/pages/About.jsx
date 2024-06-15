@@ -5,19 +5,9 @@ import 'react-responsive-modal/styles.css';
 
 const About = () => {
 
-    const [open, setOpen] = useState(false);
-  const onOpenModal = () => setOpen(true);
-  const onCloseModal = () => setOpen(false);
-  const [content, setContent] = useState("bye");
+
   return (
     <>
-    
-    
-      <Modal classNames='' open={open} onClose={onCloseModal} center>
-        <h2>Simple centered modal</h2>
-        <p>{content}</p>
-        <div><button onClick={()=>setContent("hello")}>click</button></div>
-      </Modal>
 
     <div className="flex flex-wrap gap-2 sm:gap-x-6 items-center justify-center">
         <h1 className='text-4xl font-bold leading-none tracking-tight sm:text-6xl'>Speednet Tenda</h1>

@@ -11,7 +11,7 @@ const Customers = () => {
 
     const [customers, setCustomers] = useState([]);
     const [loading, setLoading] = useState(false);
-    const [formData, setFormData] = useState({accountNo:"", customerFName:"", email:""});
+    const [formData, setFormData] = useState({ accountNo: "", customerFName: "", email: "" });
     function handleChange(e) {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     }
@@ -42,15 +42,12 @@ const Customers = () => {
             {
                 loading ? <p>Loading...</p> :
                     <div className='overflow-x-auto'>
-                        <div class="mockup-window border bg-base-300">
-  <div class="flex justify-center px-4 py-16 bg-base-200">Hello!</div>
-</div>
 
                         <table className='table table-zebra table-fixed'>
-                                
+
                             <thead>
                                 <tr>
-                                    
+                                    <th></th>
                                     <th>Account No</th>
                                     <th>Name</th>
                                     <td>PhoneNo</td>
@@ -59,8 +56,8 @@ const Customers = () => {
                                     <td>Plan Type</td>
                                     <td>Supplier</td>
                                     <td>Account Status</td>
-                                    <th></th>
-                                    <td></td>
+                                    
+                                    
                                 </tr>
                                 {/* <tr>
                                     <th><button className='btn-accent btn' onClick={fetchAccount}>Search</button></th>
@@ -76,6 +73,7 @@ const Customers = () => {
                                     customers.map((customer, index) => {
                                         return (
                                             <tr>
+                                                <td><EditAccountBtn customer={customer} accno={customer._id}></EditAccountBtn> </td>
                                                 <td>{customer.accountNo}</td>
                                                 <td>{customer.customerFName}</td>
                                                 <td>{customer.phoneNo?.phoneNo}</td>
@@ -83,8 +81,7 @@ const Customers = () => {
                                                 <td>{customer.phoneNo?.planType}</td>
                                                 <td>{customer.phoneNo?.vendor?.vendor}</td>
                                                 <td>{customer.phoneNo?.accountStatus}</td>
-                                                <td><EditAccountBtn customer={customer} accno={customer._id}></EditAccountBtn> </td>
-                                                <td><Link to={`/accounts/${customer._id}`} className='btn'>Profile</Link></td>
+                                                
 
                                             </tr>
                                         )
