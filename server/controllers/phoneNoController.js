@@ -148,66 +148,30 @@ export const addConnection = async (req, res) => {
 }
 
 
-
-
-// export const updatePhoneNo = async(req, res) =>{
-//     try{
-//         const {updatedAccountNo, updatedICCID} = req.body;
-//         const newICCID = await Card.findOne({ICCID: updatedICCID});
-//         const newAccount = await Account.findOne({accountNo: updatedAccountNo});
-//         await Card.findByIdAndUpdate()
+export const checkPhoneNumber = async(req, res) => {
+    try{
+        const {phoneNo, ICCID} = req.body;
+        console.log(req.body);
+        if(phoneNo && phoneNo!== undefined){
+            const phone = await PhoneNo.findOne({phoneNo: phoneNo}).populate({path: 'vendor'});
+            if(phone){
+                return res.status(200).json({success: true, phone});
+            }
+            res.status(200).json({success: false, message:'Invalid phone number!'});
+        }
+        else if(ICCID && ICCID!== undefined){
+            const phone = await PhoneNo.findOne({ICCID: ICCID}).populate({path: 'vendor'});
+            if(phone){
+                return res.status(200).json({success: true, phone});
+            }
+            res.status(200).json({success: false, message:'Invalid ICCID!'});    
+        }
+        else{
+            res.status(200).json({success: false, message : 'Please fill one field again!'});
+        }
         
-//         if(!newICCID){
-//             const newCard = Card({ICCID:ICCID, vendor});
-//             newICCID = await newCard.save();
-//         }
-//         if(newAccount && newICCID){
-//             const phoneNo = await Phone.find
-//             if(newICCID.status==='available'){
-//                 await Card.findByIdAndUpdate(newICCID._id,{status:'in-use'});
-//                 if(newAccount.role==='dealer'){
-//                     const updatedPhoneNo = await PhoneNo.findByIdAndUpdate(
-//                         req.params.id,
-//                         {
-//                             $set: {newAccount:newAccount._id, newICCID:newICCID._id, accountStatus:'active'}
-//                         }, { new: true });
-//                     console.log(updatedPhoneNo);
-//                     const newCount = newAccount.connectionCount+1;
-//                     await Account.findByIdAndUpdate(newAccount._id,{connnectionCount:newCount});
-//                     res.status(200).json({success: true, message: 'Connection assigned successfully'});
-//                 }
-//                 else{
-//                     if(newAccount.connectionCount==1){
-//                         await PhoneNo.findOneAndUpdate({accountStatus: 'active', newAccount: newAccount._id}, {accountStatus: 'inactive'});
-//                     }
-//                     await Account.findByIdAndUpdate(newAccount._id,{connectionCount:1, PhoneNo: req.params.id});
-//                     const updatedPhoneNo = await PhoneNo.findByIdAndUpdate(
-//                         req.params.id,
-//                         {
-//                             $set: {newAccount:newAccount._id, newICCID:newICCID._id, accountStatus:'active'}
-//                         }, { new: true });
-//                 }
-                
-//             }
-//             else{
-//                 res.status(200).json({success: false, message: 'ICCID is not available'});
-//             }
-
-            
-//             const newPhoneNos = newAccount.phoneNo.concat(req.params.id);
-//             // const arr = [...new Set(newPhoneNos)]
-//             // await Account.findByIdAndUpdate(newAccount._id, {phoneNo:newPhoneNos}, {new: true});
-            
-//         }
-//         else{
-//             console.log("invalid account or iccid");
-//             return res.status(201).json({success:false, message: "Invalid account or ICCID"});
-//         }
-        
-//     }
-//     catch(err){
-//         res.status(500).json({message: err.message});
-//         console.log(err.message);
-//     }
-// }
-
+    }catch(e){
+        console.log(e.message);
+        res.status(500).json({success: false, message:e.message});
+    }
+}

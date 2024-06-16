@@ -3,12 +3,12 @@ import PhoneNo from "../models/phoneNo.js";
 
 export const createAccount = async(req, res) =>{
     try{
-        const {customer, invoiceDate, activationDate, recurringStatus, phoneNo, accountStatus} = req.body;
+        const {invoiceDate, activationDate, recurringStatus} = req.body;
         const accountNo = (await Account.find().sort({accountNo:-1}).limit(1)).at(0)?.accountNo+1 || 100000;
         
         console.log(accountNo);
-        const newAccount = new Account({customer, invoiceDate, activationDate, accountNo, phoneNo, recurringStatus, accountStatus,
-            customerLName: req.body.customerLName,
+        const newAccount = new Account({invoiceDate, activationDate, accountNo, recurringStatus,
+            customerFName: req.body.customerFName,
             email: req.body.email,
             contact: req.body.contact,
             address: {
@@ -20,7 +20,7 @@ export const createAccount = async(req, res) =>{
             role:req.body.role
         });
         await newAccount.save();
-        res.status(201).json({message: "Account created successfully"});
+        res.status(201).json({success: true, message: 'Account created Successfully', newAccount: newAccount});
     }
     catch(e){
         res.status(500).json({message: e.message});
@@ -103,7 +103,7 @@ export const getCustomerAccounts = async (req, res) => {
         query = {role: 'customer', email};
     }
     try{
-        const accounts = await Account.find(query).populate({path: 'phoneNo'});
+        const accounts = await Account.find(query).populate({path: 'phoneNo', populate:{path:'vendor'}});
         res.status(200).json(accounts);
     }
     catch(e){
@@ -111,45 +111,16 @@ export const getCustomerAccounts = async (req, res) => {
     }
 }
 
-
-
-// async function updateAccountandPhone(req, res, phoneNo){
-
-//     const session = await conn.startSession();
-//     try {
-//         const account = await Account.findOne({_id: req.params.id});
-//         var newPhoneNos;
-//         if(account.phoneNo ==[] || account.phoneNo == undefined){
-//             newPhoneNos = phoneNo;
-//         }
-//         else{
-//             newPhoneNos = account.phoneNo.concat(phoneNo);
-//         }
-//         const arr = [...new Set(newPhoneNos)]
-
-
-//         session.startTransaction(); 
-        
-//         await Account.findByIdAndUpdate(req.params.id, {phoneNo: arr}, {new: true}, {session});
-//         await PhoneNo.findByIdAndUpdate(phoneNo[0], {newAccount: req.params.id}, {new: true}, {session});
-//         await phoneNo.forEach(async(id)=>await PhoneNo.findByIdAndUpdate(id, {newAccount: req.params.id}, {session}));
-        
-//         await session.commitTransaction();
-        
-//         console.log('success');
-//     } catch (error) {
-//         console.log(error.message);
-//         await session.abortTransaction();
-//     }
-//     session.endSession();
-        
-// }
-
 export const updateAccount = async(req, res) =>{
     try{
         const {customerFName, email, contact, street, city, zip, role, country} = req.body;
         console.log(req.body);
-        const updatedAccount = await Account.findByIdAndUpdate(req.params.id, {customerFName, email, contact, address:{street, city, country, zip}, role}, {new: true});
+        const updatedAccount = await Account.findByIdAndUpdate(req.params.id, {customerFName, email, contact, address:{street, city, country, zip}, role}, {new: true}).populate(
+            {
+                path: 'phoneNo',
+                populate: {path: 'vendor'}
+            }
+        );
         res.status(200).json(updatedAccount);
     }
     catch(e){

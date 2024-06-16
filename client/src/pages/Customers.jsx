@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import EditAccountBtn from '../components/EditAccountBtn';
+import AddAccountBtn from '../components/AddAccountBtn';
 
 const BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
 
@@ -39,6 +40,7 @@ const Customers = () => {
     console.log(customers);
     return (
         <div>
+            <AddAccountBtn></AddAccountBtn>
             {
                 loading ? <p>Loading...</p> :
                     <div className='overflow-x-auto'>
@@ -73,16 +75,7 @@ const Customers = () => {
                                     customers.map((customer, index) => {
                                         return (
                                             <tr>
-                                                <td><EditAccountBtn customer={customer} accno={customer._id}></EditAccountBtn> </td>
-                                                <td>{customer.accountNo}</td>
-                                                <td>{customer.customerFName}</td>
-                                                <td>{customer.phoneNo?.phoneNo}</td>
-                                                <td>{customer.phoneNo?.ICCID}</td>
-                                                <td>{customer.phoneNo?.planType}</td>
-                                                <td>{customer.phoneNo?.vendor?.vendor}</td>
-                                                <td>{customer.phoneNo?.accountStatus}</td>
-                                                
-
+                                            <EditAccountBtn customer={customer} accno={customer._id}></EditAccountBtn> 
                                             </tr>
                                         )
                                     })
