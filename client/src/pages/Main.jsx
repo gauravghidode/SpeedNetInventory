@@ -92,17 +92,17 @@ const Main = () => {
                   <tr key={Tuple._id}>
                     <th>{Tuple?.newAccount?.accountNo}</th>
                     <td>{Tuple?.newAccount?.customerFName} {Tuple?.newAccount?.customerLName}</td>
-                    <td>{Tuple?.role}</td>
+                    <td className='capitalize'>{Tuple?.newAccount?.role}</td>
                     <td>{Tuple.phoneNo}</td>
                     <td>{Tuple.ICCID}</td>
                     <td>{Tuple.planType}</td>
                     <td>{Tuple.vendor.vendorName}</td>
-    
+                    
                     <td>{Tuple.date}</td>
-                    <td>{Tuple.recurringStatus}</td>
+                    <td className='capitalize'>{Tuple.recurringStatus}</td>
                     
                     
-                    <td><Link to={`/accounts/${Tuple.newAccount._id}`} className= 'link'>Portal</Link></td>
+                    <td><Link className='btn btn-secondary' to={`/accounts/${Tuple.newAccount._id}`}>Profile</Link></td>
                   </tr>
                   ))
                 }

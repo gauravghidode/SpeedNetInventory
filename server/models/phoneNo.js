@@ -59,6 +59,10 @@ const phoneNoSchema = new mongoose.Schema({
     tempCustomer:{
         type: String,
         default: 'Check'
+    },
+    custody:{
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'User',
     }
     
 },{timestamps: true});

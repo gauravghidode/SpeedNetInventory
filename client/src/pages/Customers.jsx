@@ -40,15 +40,19 @@ const Customers = () => {
     console.log(customers);
     return (
         <div>
-            <AddAccountBtn></AddAccountBtn>
+            <div className='flex gap-x-4'>
+                <AddAccountBtn role={'customer'}></AddAccountBtn>
+                <button onClick={fetchAccount} className='btn btn-secondary'>Refresh</button>
+
+            </div>
             {
                 loading ? <p>Loading...</p> :
                     <div className='overflow-x-auto'>
 
-                        <table className='table table-zebra table-fixed'>
+                        <table className='table table-zebra table-pin-rows table-pin-cols'>
 
                             <thead>
-                                <tr>
+                                <tr className=' font-bold text-base text-black'>
                                     <th></th>
                                     <th>Account No</th>
                                     <th>Name</th>
@@ -57,9 +61,11 @@ const Customers = () => {
 
                                     <td>Plan Type</td>
                                     <td>Supplier</td>
+                                    <td>Recurring Status</td>
                                     <td>Account Status</td>
-                                    
-                                    
+
+
+
                                 </tr>
                                 {/* <tr>
                                     <th><button className='btn-accent btn' onClick={fetchAccount}>Search</button></th>
@@ -75,7 +81,7 @@ const Customers = () => {
                                     customers.map((customer, index) => {
                                         return (
                                             <tr>
-                                            <EditAccountBtn customer={customer} accno={customer._id}></EditAccountBtn> 
+                                                <EditAccountBtn customer={customer} accno={customer._id}></EditAccountBtn>
                                             </tr>
                                         )
                                     })

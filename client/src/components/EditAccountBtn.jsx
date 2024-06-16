@@ -140,7 +140,8 @@ console.log(currentUser);
                 <td>{currentAccount.phoneNo?.ICCID}</td>
                 <td>{currentAccount.phoneNo?.planType}</td>
                 <td>{currentAccount.phoneNo?.vendor?.vendorName}</td>
-                <td>{currentAccount.phoneNo?.accountStatus}</td>
+                <td className='capitalize'>{currentAccount.phoneNo?.recurringStatus}</td>
+                <td className='capitalize'>{currentAccount.phoneNo?.accountStatus}</td>
 
            
             <Modal classNames='' open={open} onClose={onCloseModal} center>

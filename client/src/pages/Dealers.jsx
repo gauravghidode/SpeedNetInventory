@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import axios from 'axios';
 const BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
 import { Link } from 'react-router-dom';
+import AddAccountBtn from '../components/AddAccountBtn';
 
 const Dealers = () => {
 
@@ -33,13 +34,18 @@ const Dealers = () => {
 
     return (
         <div>
+            <div className='flex gap-x-4'>
+                <AddAccountBtn role={'dealer'}></AddAccountBtn>
+                <button onClick={fetchAccount} className='btn btn-secondary'>Refresh</button>
+
+            </div>
             {
                 loading ? <p>Loading...</p> :
                     <div className='overflow-x-auto'>
 
                         <table className='table'>
                             <thead>
-                                <tr>
+                                <tr className=' font-bold text-base text-black'>
                                     <th></th>
                                     <th>Account No</th>
                                     <th>Name</th>

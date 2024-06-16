@@ -54,7 +54,6 @@ const accountSchema = new mongoose.Schema({
     email: {
         type: String,
     },
-    
 }, {timestamps: true});
 
 const Account = mongoose.model('Account', accountSchema);
