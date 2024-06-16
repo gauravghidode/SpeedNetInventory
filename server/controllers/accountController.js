@@ -144,3 +144,16 @@ export const checkAccount = async(req, res)=>{
         res.status(500).json({message: e.message});
     }
 }
+
+export const searchAccounts = async(req, res)=>{
+    try{
+        const account = await Account.find({customerFName:{ $regex: req.params.customerFName}}, {customerFName: true, accountNo: true}).limit(10);
+        if(!account){
+            res.status(404).error({message: "Account not found"});
+            return;
+        }
+        res.status(200).json(account);
+    }catch(e){
+        res.status(500).json({message: e.message});
+    }
+}

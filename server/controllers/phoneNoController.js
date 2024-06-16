@@ -99,6 +99,8 @@ export const deactivateConnection = async(req, res) =>{
 
 export const addConnection = async (req, res) => {
     try{
+        console.log(req.body)
+        console.log(req.params.id);
         const {updatedAccountNo, updatedICCID, lastUser} = req.body;
         if(updatedAccountNo === undefined || updatedAccountNo==='' || updatedICCID === undefined || updatedICCID===''){
             res.status(200).json({success: false, message: "Please Fill all the fields again"});
@@ -171,6 +173,18 @@ export const checkPhoneNumber = async(req, res) => {
         }
         
     }catch(e){
+        console.log(e.message);
+        res.status(500).json({success: false, message:e.message});
+    }
+}
+
+
+export const updateCustody = async(req, res) => {
+    try{
+        await PhoneNo.findByIdAndUpdate(req.params.id, {custody: req.body.custody});
+        res.status(200).json({success: true, message:`Updated custody to ${req.body.custody}`});
+    }
+    catch(e){
         console.log(e.message);
         res.status(500).json({success: false, message:e.message});
     }

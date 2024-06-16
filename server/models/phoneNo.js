@@ -53,16 +53,20 @@ const phoneNoSchema = new mongoose.Schema({
         required: true,
         default: 1
     },
-    tempAccNo:{
+    cplanPrice:{
         type: Number,
+        default: 0
     },
-    tempCustomer:{
-        type: String,
-        default: 'Check'
+    cmodemLease:{
+        type: Number,
+        default: 0
+    },
+    cactivationDate:{
+        type: Date
     },
     custody:{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'User',
+        type: String,
+        default: 'SpeedNet'
     }
     
 },{timestamps: true});

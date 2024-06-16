@@ -1,5 +1,5 @@
 import express from 'express'
-import { createAccount, getAllAccounts, getAccountById, updateAccount, checkAccount, getDealerAccounts, getCustomerAccounts } from '../controllers/accountController.js';
+import { searchAccounts, createAccount, getAllAccounts, getAccountById, updateAccount, checkAccount, getDealerAccounts, getCustomerAccounts } from '../controllers/accountController.js';
 
 const router = express.Router();
 
@@ -10,5 +10,6 @@ router.put('/update/:id', updateAccount);
 router.get('/checkAccount/:newAccountNo', checkAccount);
 router.get('/getDealerAccounts', getDealerAccounts);
 router.get('/getCustomerAccounts', getCustomerAccounts);
+router.get('/searchAccounts/:customerFName', searchAccounts);
 
 export default router;

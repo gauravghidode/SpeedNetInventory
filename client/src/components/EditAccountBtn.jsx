@@ -16,7 +16,6 @@ const EditAccountBtn = ({ customer, accno }) => {
     const onOpenModal = () => { setOpen(true) };
     const onCloseModal = () => setOpen(false);
     const {currentUser} = useSelector((state)=>state.user);
-console.log(currentUser);
 
     const [currentAccount, setCurrentAccount] = useState(customer);
     // console.log(currentAccount);

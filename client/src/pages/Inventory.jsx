@@ -5,67 +5,11 @@ import axios from 'axios'
 import { useState } from 'react'
 import moment from 'moment';
 const BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
+import InventoryRow from '../components/InventoryRow'
 
 const Inventory = () => {
 
   const [mainArr, setMainArr] = useState([]);
-  const [arr, setArr] = useState([]);
-
-  async function checkCustomer(e){
-    var index = e.target.value;
-    var newAccountNo = (mainArr[index].tempAccNo);
-    try{
-      const response = await axios({
-        method: 'get',
-        url: `${BASE_URL}/v1/account/checkAccount/${newAccountNo}`,
-      });
-      // console.log(response);
-      toast.success('Account holder: ' + response?.data.customerFName + ' ' + response?.data?.customerLName);
-      // mainArr[index].tempCustomer = response.data.customerFName;
-      // const id = mainArr[index]._id;
-      // setMainArr(
-      //   mainArr.map((item) => {
-      //     console.log(id,item._id);
-      //       item._id === id 
-      //       ? {...item, tempCustomer : "changed"}
-      //       : item 
-      //   }
-      // ))
-      console.log(mainArr[index].tempCustomer);
-    }
-    catch(e){
-      toast.error("Account not found "+e.message);
-    }
-  }
-
-  async function updateRow(e){
-    var index = (e.target.value);
-    var newICCID = (mainArr[index].ICCID);
-    var newAccountNo = (mainArr[index].tempAccNo);
-    var id = (mainArr[index]._id);
-
-    try{
-      const response = await axios({
-        method: 'put',
-        url: `${BASE_URL}/v1/phoneNo/addConnection/${id}`,
-        data: {
-          updatedICCID: newICCID,
-          updatedAccountNo: newAccountNo
-        }
-      });
-        console.log(response);
-        if(response.data.success) {
-        toast.success('update successful');
-        fetchMain();
-      }
-      else{
-        toast.warning("Update failed! "+ response.data.message);
-      }
-    }catch(e){
-      toast.error("Something went wrong "+e.message);
-    } 
-    
-  }
 
   async function fetchMain(){
     try{
@@ -75,7 +19,6 @@ const Inventory = () => {
       });
       // console.log(response);
       setMainArr(response.data);
-      setArr(response.data);
       toast.success('request successful');
     }
     catch(e){
@@ -99,17 +42,15 @@ const Inventory = () => {
                 {/* head */}
                 <thead>
                   <tr>
-                    
+                    <td></td>
                     <th>Phone NO</th>
                     <th>Plan Type</th>
                     <th>Supplier</th>
                     <th>Current ICCID</th>
 
-                    <th>New ICCID</th>
-                    <th>Old Customer Name</th>
-                    <th>New Customer Account No.</th>
-                    <th>New Customer Name</th>
-                    <th></th>
+                    {/* <th>Old Customer Name</th> */}
+                  
+                    <th>Custody</th>
                     <th>Tech Associate</th>
                     <th>Last update</th>
                   </tr>
@@ -117,20 +58,7 @@ const Inventory = () => {
                 <tbody>
                 {
                   mainArr.map((Tuple, index)=>(
-                  <tr key={Tuple._id} id={index}>
-                    <td>{Tuple?.phoneNo}</td>
-                    <td>{Tuple?.planType}</td>
-                    <th>{Tuple?.vendor?.vendorName}</th>
-                    <td>{Tuple?.ICCID}</td>
-                    <td><input className='input input-bordered input-sm' type='text' onChange={(e)=>mainArr[index].ICCID = e.target.value} ></input></td>
-                    <td>{Tuple?.newAccount?.customerFName}</td>
-                    <td><input className='input input-bordered input-sm' type='text' onChange={(e)=>mainArr[index].tempAccNo = e.target.value}></input></td>
-                    <td><button value={index} onClick={checkCustomer}>{Tuple.tempCustomer}</button></td>
-                    
-                    <td><button value={index} onClick={updateRow}>Update</button></td>
-                    <th>{Tuple?.lastUser?.username}</th>
-                    <th>{moment(Tuple.createdAt).fromNow()}</th>
-                  </tr>
+                      <InventoryRow Tuple={Tuple} fetchMain={fetchMain}></InventoryRow>
                   ))
                 }
                 </tbody>
