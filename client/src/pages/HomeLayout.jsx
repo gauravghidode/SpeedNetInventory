@@ -13,6 +13,7 @@ import Dealers from './Dealers'
 import Customers from './Customers'
 import LeftSideBar from '../components/LeftSideBar'
 import VendorPage from './VendorPage'
+import Admin from './Admin'
 const BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
 
 const HomeLayout = () => {
@@ -34,6 +35,7 @@ const HomeLayout = () => {
                 </Route>
                 <Route path='accounts/:accno' element={<Account></Account>}></Route>
                 <Route path='vendor/:id' element={<Vendor></Vendor>}></Route>
+                <Route path='admin' element={<Admin></Admin>}></Route>
                 
             </Routes>
         </section>

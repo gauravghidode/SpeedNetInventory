@@ -1,5 +1,4 @@
 import PhoneNo from '../models/phoneNo.js';
-import Card from '../models/card.js';
 import Account from '../models/account.js';
 
 export const addPhoneNo = async(req, res) =>{

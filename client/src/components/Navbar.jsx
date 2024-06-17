@@ -42,6 +42,7 @@ const Navbar = () => {
                         <li><NavLink to='/inventory'>Inventory</NavLink></li>
                         <li><NavLink to='/dealer'>Dealers</NavLink></li>
                         <li><NavLink to='/customer'>Customers</NavLink></li>
+                        <li><NavLink to='/Admin'>Admin Panel</NavLink></li>
                     </ul>
                 </div> 
                 <NavLink to='/' className='lg:flex btn btn-primary text-3xl items-center'>SpeedNet FSM</NavLink>
@@ -56,6 +57,7 @@ const Navbar = () => {
                     <li><NavLink to='/inventory'>Inventory</NavLink></li>
                     <li><NavLink to='/dealer'>Dealers</NavLink></li>
                     <li><NavLink to='/customer'>Customers</NavLink></li>
+                    <li><NavLink to='/Admin'>Admin Panel</NavLink></li>
                 </ul>
             </div>
             <div className="navbar-end">

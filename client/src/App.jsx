@@ -8,6 +8,7 @@ import Register from './pages/Register'
 import HomeLayout from './pages/HomeLayout'
 import LeftSideBar from './components/LeftSideBar'
 import Header from './components/Header'
+import LoginPrivateRoute from './components/LoginPrivateRoute'
 
 
 const App = () => {
@@ -16,7 +17,9 @@ const App = () => {
       <Header></Header>
       <Routes>
         {/* <Route path='/*' element={<LeftSideBar></LeftSideBar>} errorElement={<Error></Error>}> */}
-        <Route path='/*' element={<HomeLayout></HomeLayout>} errorElement={<Error></Error>}>
+        <Route element={<LoginPrivateRoute></LoginPrivateRoute>}>
+          <Route path='/*' element={<HomeLayout></HomeLayout>} errorElement={<Error></Error>}>
+        </Route>
           
         </Route>
         <Route path='/register' element={<Register></Register>}></Route>

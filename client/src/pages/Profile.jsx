@@ -50,6 +50,7 @@ const Profile = () => {
 
     return (
         <div>
+
             <h1 className='text-3xl font-semibold text-center mb-4'>Profile</h1>
             <form onSubmit={handleSubmit} action="" className='mx-auto max-w-xs'>
                 <p>Joined {moment(currentUser.createdAt).fromNow()}</p>
