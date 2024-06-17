@@ -22,11 +22,11 @@ export const login = async(req, res)=>{
         const {email, password} = req.body;
         const validUser = await User.findOne({email});
         if(!validUser){
-            res.status(401).json({message: "Invalid credentials"});
+            return res.status(200).json({success:false, message: "Invalid credentials"});
         }
         const validPassword = await bcryptjs.compare(password, validUser.password);
         if(!validPassword){
-            res.status(401).json({message: "Invalid credentials"});
+            return res.status(200).json({success: false, message: "Invalid credentials"});
         }
         const {password: hashedPassword, ...rest} = validUser._doc;
         const token = jwt.sign({id: validUser._id}, process.env.JWT_SECRET);

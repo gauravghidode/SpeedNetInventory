@@ -31,9 +31,17 @@ const Login = () => {
         withCredentials: true
       });
       // console.log(response);
-      dispatch(loginSuccess(response));
-      toast.success("Logged in successfully");
-      navigate('/');
+      if(response.data.success==false){
+        toast.warning(response.data.message);
+        dispatch(loginFailure(response.data));
+      }
+      else{
+        dispatch(loginSuccess(response));
+        toast.success(response.data.message);
+        navigate('/');
+      }
+      
+      
     }
     catch(e){
       
