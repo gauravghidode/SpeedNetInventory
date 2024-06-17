@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { toast } from 'react-toastify'
 import axios from 'axios'
 import { useState } from 'react'
-import { useDownloadExcel} from 'react-export-table-to-excel'
+import { useDownloadExcel } from 'react-export-table-to-excel'
 import { useRef } from 'react'
 import BasicTable from '../components/BasicTable'
 const BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
@@ -25,7 +25,7 @@ const Admin = () => {
         try {
             const response = await axios({
                 method: 'get',
-                url: `${BASE_URL}/v1/phoneNo/getAllActiveConnections`,
+                url: `${BASE_URL}/v1/user/getAllUsers`,
                 // url: `http://localhost:4000/v1/account/getAllAccounts`,
             });
             console.log(response);
@@ -39,11 +39,9 @@ const Admin = () => {
 
     }
 
-    function searchHandler() {
-        setMainArr(arr.filter((tuple) => {
-            tuple.newAccount.accountNo.toString().startsWith(e.target.value)
-        }));
-    }
+    useEffect(() => {
+        fetchMain();
+    }, [])
 
     return (
         <>
@@ -55,44 +53,79 @@ const Admin = () => {
                             <table className="table table-pin-rows table-pin-cols table-zebra" ref={tableRef}>
                                 {/* head */}
                                 <thead>
-                                    <tr className=' font-bold text-base text-black'>
-                                        <th></th>
+                                    <tr className=' font-bold text-base'>
+
                                         <th>Employee Name</th>
                                         <th>Role</th>
-                                        <th>Phone No</th>
-                                        <th>ICCId</th>
-                                        <th>Plan Type</th>
-                                        <th>Supplier</th>
-                                        <th>Activation date</th>
-                                        <th>Recurring Status</th>
+                                        <th>Email</th>
+                                        <th>Contact</th>
+                                        <th></th>
+
+                                        <th>Customer: Edit and Swap</th>
+                                        <th>Customer: Swap only</th>
+                                        <th>Vendor: Add PhoneNo</th>
+                                        <th>Inventory: Swap</th>
 
                                         <th></th>
                                     </tr>
-                                    
+
                                 </thead>
                                 <tbody>
                                     {
                                         mainArr.map((Tuple, index) => (
                                             <tr key={Tuple._id}>
-                                                <th>{Tuple?.newAccount?.accountNo}</th>
-                                                <td>{Tuple?.newAccount?.customerFName} {Tuple?.newAccount?.customerLName}</td>
-                                                <td className='capitalize'>{Tuple?.newAccount?.role}</td>
-                                                <td>{Tuple.phoneNo}</td>
-                                                <td>{Tuple.ICCID}</td>
-                                                <td>{Tuple.planType}</td>
-                                                <td>{Tuple.vendor.vendorName}</td>
+                                                <th>{Tuple?.username}</th>
+                                                <td>{Tuple?.role}</td>  
+                                                <td>{Tuple?.email}</td>
+                                                <td>{Tuple.contact}</td>
+                                                <td></td>
+                                                <td><input type="checkbox" className="toggle" checked={Tuple.customerEditAndSwap}/></td>
+                                                <td><input type="checkbox" className="toggle" checked={Tuple.customerSwap} /></td>
+                                                <td><input type="checkbox" className="toggle" checked={Tuple.vendorfileAdd} /></td>
+                                                <td><input type="checkbox" className="toggle" checked={Tuple.inventorySwap} /></td>
 
-                                                <td>{Tuple.date}</td>
-                                                <td className='capitalize'>{Tuple.recurringStatus}</td>
 
+                                                <td><Link to={`/profile/${Tuple._id}`} className='btn btn-secondary'>Profile</Link></td>
 
-                                                {/* <td><Link className='btn btn-secondary' to={`/accounts/${Tuple.newAccount._id}`}>Profile</Link></td> */}
                                             </tr>
                                         ))
                                     }
                                 </tbody>
                             </table>
                         </div>
+
+                        <div className='pt-10'>
+                            <h2 className='text-xl'>Account Delete Requests</h2>
+                            <table className='table table-zebra border-2 -primary'>
+                                <thead>
+                                    <th>Account Number</th>
+                                    <th>Customer Name</th>
+                                    <th></th>
+                                </thead>
+                                <tbody>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div className='pt-10'>
+                            <h2 className='text-xl'>Phone Number Delete Requests</h2>
+                            <table className='table table-zebra border-2 -primary'>
+                                <thead>
+                                    <th>Account Number</th>
+                                    <th>Customer Name</th>
+                                    <th></th>
+                                </thead>
+                                <tbody>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                </tbody>
+                            </table>
+                        </div>
+                        
                     </div> :
                     <div>
                         No records found

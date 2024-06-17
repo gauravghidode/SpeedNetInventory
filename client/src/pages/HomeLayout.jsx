@@ -31,7 +31,7 @@ const HomeLayout = () => {
                 <Route path='main' element={<Main></Main>}></Route>
                 <Route path='inventory' element={<Inventory></Inventory>}></Route>
                 <Route element={<PrivateRoute></PrivateRoute>}>
-                    <Route path='profile' element={<Profile></Profile>}></Route>
+                    <Route path='profile/:id' element={<Profile></Profile>}></Route>
                 </Route>
                 <Route path='accounts/:accno' element={<Account></Account>}></Route>
                 <Route path='vendor/:id' element={<Vendor></Vendor>}></Route>

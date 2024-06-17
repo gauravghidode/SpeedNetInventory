@@ -15,7 +15,7 @@ const EditAccountBtn = ({ customer, accno }) => {
     const [open, setOpen] = useState(false);
     const onOpenModal = () => { setOpen(true) };
     const onCloseModal = () => setOpen(false);
-    const {currentUser} = useSelector((state)=>state.user);
+    const { currentUser } = useSelector((state) => state.user);
 
     const [currentAccount, setCurrentAccount] = useState(customer);
     // console.log(currentAccount);
@@ -102,7 +102,7 @@ const EditAccountBtn = ({ customer, accno }) => {
 
     async function handleDeactivate(e) {
         try {
-    
+
             const id = currentAccount.phoneNo._id
             const userId = currentUser._id
             const accId = currentAccount._id;
@@ -113,7 +113,7 @@ const EditAccountBtn = ({ customer, accno }) => {
                 data: { userId, iccId, accId },
                 withCredentials: true
             });
-            if(response.data.success) {
+            if (response.data.success) {
                 await handleSubmit(e);
                 toast.success(response.data.message);
             }
@@ -126,23 +126,23 @@ const EditAccountBtn = ({ customer, accno }) => {
 
     useEffect(() => {
         setCurrentAccount(customer);
-    },[]);
+    }, []);
 
     return (
         <>
 
-           
-                <td><button onClick={() => { onOpenModal() }}><FaUserPen className='h-6 w-6' /></button></td>
-                <td>{currentAccount.accountNo}</td>
-                <td>{currentAccount.customerFName}</td>
-                <td>{currentAccount.phoneNo?.phoneNo}</td>
-                <td>{currentAccount.phoneNo?.ICCID}</td>
-                <td>{currentAccount.phoneNo?.planType}</td>
-                <td>{currentAccount.phoneNo?.vendor?.vendorName}</td>
-                <td className='capitalize'>{currentAccount.phoneNo?.recurringStatus}</td>
-                <td className='capitalize'>{currentAccount.phoneNo?.accountStatus}</td>
 
-           
+            <td><button onClick={() => { onOpenModal() }}><FaUserPen className='h-6 w-6' /></button></td>
+            <td>{currentAccount.accountNo}</td>
+            <td>{currentAccount.customerFName}</td>
+            <td>{currentAccount.phoneNo?.phoneNo}</td>
+            <td>{currentAccount.phoneNo?.ICCID}</td>
+            <td>{currentAccount.phoneNo?.planType}</td>
+            <td>{currentAccount.phoneNo?.vendor?.vendorName}</td>
+            <td className='capitalize'>{currentAccount.phoneNo?.recurringStatus}</td>
+            <td className='capitalize'>{currentAccount.phoneNo?.accountStatus}</td>
+
+
             <Modal classNames='' open={open} onClose={onCloseModal} center>
                 <h2>Edit Profile</h2>
                 {
@@ -159,83 +159,95 @@ const EditAccountBtn = ({ customer, accno }) => {
                                     <p>Customer Name: {currentAccount.customerFName}</p>
                                     <p>ICCID: {currentAccount.phoneNo?.ICCID}</p>
                                     <p>Vendor Name: {currentAccount.phoneNo?.vendor?.vendorName}</p>
-                                    <button onClick={handleDeactivate} className='btn btn-secondary mt-4' disabled={!currentAccount?.phoneNo?.accountStatus || currentAccount?.phoneNo?.accountStatus==='inactive'}>Deactivate Connection</button>
+                                    {console.log(currentUser.customerSwap)}
+                                    {
+                                        (currentUser.role == 'admin' || currentUser.customerEditAndSwap || currentUser.customerSwap) &&
+                                        <button onClick={handleDeactivate} className='btn btn-secondary mt-4' disabled={!currentAccount?.phoneNo?.accountStatus || currentAccount?.phoneNo?.accountStatus === 'inactive'}>Deactivate Connection</button>
+                                    }
                                 </div>
                             </div>
 
 
                             <div className='card'>
-                                <form action="" className='' onSubmit={handleSubmit}>
-                                    <div className='flex flex-wrap mx-auto justify-around border-primary border-b-2 '>
-                                        <div className='max-w-sm p-10'>
+                                {
+                                    (currentUser.role == 'admin' || currentUser.customerEditAndSwap) &&
+
+                                    <form action="" className='' onSubmit={handleSubmit}>
+                                        <div className='flex flex-wrap mx-auto justify-around border-primary border-b-2 '>
+                                            <div className='max-w-sm p-10'>
 
 
-                                            <label className="form-control w-full">
-                                                <div className="label">
-                                                    <span className="label-text">Account No</span>
-                                                </div>
-                                                <input type='number' placeholder="Type here" name='contact' defaultValue={currentAccount?.accountNO} className="input input-bordered " onChange={handleChange} />
-                                            </label>
+                                                <label className="form-control w-full">
+                                                    <div className="label">
+                                                        <span className="label-text">Account No</span>
+                                                    </div>
+                                                    <input type='number' placeholder="Type here" name='accountNo' defaultValue={currentAccount?.accountNO} className="input input-bordered " onChange={handleChange} />
+                                                </label>
 
-                                            <label className="form-control w-full">
-                                                <div className="label">
-                                                    <span className="label-text">Email</span>
-                                                </div>
-                                                <input type='email' placeholder="Type here" name='email' defaultValue={currentAccount?.email} className="input input-bordered " onChange={handleChange} />
-                                            </label>
+                                                <label className="form-control w-full">
+                                                    <div className="label">
+                                                        <span className="label-text">Email</span>
+                                                    </div>
+                                                    <input type='email' placeholder="Type here" name='email' defaultValue={currentAccount?.email} className="input input-bordered " onChange={handleChange} />
+                                                </label>
 
-                                            <label className="form-control w-full">
-                                                <div className="label">
-                                                    <span className="label-text">Street</span>
-                                                </div>
-                                                <input type='text' placeholder="Type here" name='street' defaultValue={currentAccount?.address?.street} className="input input-bordered " onChange={handleChange} />
-                                            </label>
+                                                <label className="form-control w-full">
+                                                    <div className="label">
+                                                        <span className="label-text">Street</span>
+                                                    </div>
+                                                    <input type='text' placeholder="Type here" name='street' defaultValue={currentAccount?.address?.street} className="input input-bordered " onChange={handleChange} />
+                                                </label>
 
-                                            <label className="form-control w-full">
-                                                <div className="label">
-                                                    <span className="label-text">State</span>
-                                                </div>
-                                                <input type='text' placeholder="Type here" name='country' defaultValue={currentAccount?.address?.country} className="input input-bordered " onChange={handleChange} />
-                                            </label>
-                                        </div>
+                                                <label className="form-control w-full">
+                                                    <div className="label">
+                                                        <span className="label-text">State</span>
+                                                    </div>
+                                                    <input type='text' placeholder="Type here" name='country' defaultValue={currentAccount?.address?.country} className="input input-bordered " onChange={handleChange} />
+                                                </label>
+                                            </div>
 
-                                        <div className='p-10'>
-                                            <label className="form-control w-full">
-                                                <div className="label">
-                                                    <span className="label-text">Customer Name</span>
-                                                </div>
-                                                <input type='text' placeholder="Type here" name='customerFName' defaultValue={currentAccount?.customerFName} className="input input-bordered " onChange={handleChange} />
-                                            </label>
-                                            <label className="form-control w-full">
-                                                <div className="label">
-                                                    <span className="label-text">Contact</span>
-                                                </div>
-                                                <input type='number' placeholder="Type here" name='contact' defaultValue={currentAccount?.contact} className="input input-bordered " onChange={handleChange} />
-                                            </label>
+                                            <div className='p-10'>
+                                                <label className="form-control w-full">
+                                                    <div className="label">
+                                                        <span className="label-text">Customer Name</span>
+                                                    </div>
+                                                    <input type='text' placeholder="Type here" name='customerFName' defaultValue={currentAccount?.customerFName} className="input input-bordered " onChange={handleChange} />
+                                                </label>
+                                                <label className="form-control w-full">
+                                                    <div className="label">
+                                                        <span className="label-text">Contact</span>
+                                                    </div>
+                                                    <input type='number' placeholder="Type here" name='contact' defaultValue={currentAccount?.contact} className="input input-bordered " onChange={handleChange} />
+                                                </label>
 
-                                            <label className="form-control w-full">
-                                                <div className="label">
-                                                    <span className="label-text">City</span>
-                                                </div>
-                                                <input type='text' placeholder="Type here" name='city' defaultValue={currentAccount?.address?.city} className="input input-bordered " onChange={handleChange} />
-                                            </label>
+                                                <label className="form-control w-full">
+                                                    <div className="label">
+                                                        <span className="label-text">City</span>
+                                                    </div>
+                                                    <input type='text' placeholder="Type here" name='city' defaultValue={currentAccount?.address?.city} className="input input-bordered " onChange={handleChange} />
+                                                </label>
 
-                                            <label className="form-control w-full">
-                                                <div className="label">
-                                                    <span className="label-text">Zip</span>
+                                                <label className="form-control w-full">
+                                                    <div className="label">
+                                                        <span className="label-text">Zip</span>
+                                                    </div>
+                                                    <input type='number' placeholder="Type here" name='zip' defaultValue={currentAccount?.address?.zip} className="input input-bordered " onChange={handleChange} />
+                                                </label>
+                                                <div className="mt-4 w-1/2 mx-auto">
+                                                    <SubmitBtn className='mt-4' text={loading ? 'Updating' : 'Update'} disabled={loading}></SubmitBtn>
                                                 </div>
-                                                <input type='number' placeholder="Type here" name='zip' defaultValue={currentAccount?.address?.zip} className="input input-bordered " onChange={handleChange} />
-                                            </label>
-                                            <div className="mt-4 w-1/2 mx-auto">
-                                                <SubmitBtn className='mt-4' text={loading ? 'Updating' : 'Update'} disabled={loading}></SubmitBtn>
                                             </div>
                                         </div>
-                                    </div>
-                                </form>
+                                    </form>
+                                }
                             </div>
 
 
                             <div className='card'>
+                                {console.log(  currentUser)}
+                                {
+                                (currentUser.role=='admin' || currentUser.customerEditAndSwap || currentUser.customerSwap)&&
+                            
                                 <form action="" onSubmit={updatePhoneNo} className='flex'>
                                     <div className='p-10'>
                                         <label className="form-control w-full">
@@ -281,7 +293,7 @@ const EditAccountBtn = ({ customer, accno }) => {
                                         </div>
                                     </div>
                                 </form>
-
+                                }
                             </div>
 
                         </div>
