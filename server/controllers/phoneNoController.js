@@ -1,5 +1,6 @@
 import PhoneNo from '../models/phoneNo.js';
 import Account from '../models/account.js';
+import Vendor from '../models/vendor.js';
 
 export const addPhoneNo = async(req, res) =>{
     try{
@@ -75,6 +76,7 @@ export const getAllActiveConnections = async(req, res) =>{
         res.status(200).json(phoneNo);
     }
     catch(err){
+        console.log(err.message);
         res.status(500).json({message: err.message});
     }
 }
