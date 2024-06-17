@@ -10,6 +10,7 @@ import InventoryRow from '../components/InventoryRow'
 const Inventory = () => {
 
   const [mainArr, setMainArr] = useState([]);
+  const [arr, setArr] = useState([]);
 
   async function fetchMain(){
     try{
@@ -19,6 +20,7 @@ const Inventory = () => {
       });
       // console.log(response);
       setMainArr(response.data);
+      setArr(response.data);
       toast.success('request successful');
     }
     catch(e){
@@ -54,6 +56,21 @@ const Inventory = () => {
                     <th>Tech Associate</th>
                     <th>Last update</th>
                   </tr>
+
+                  <tr className=''>
+                    <th></th>
+                    <th><input className='input input-bordered input-primary input-sm w-full' type="text" onChange={(e)=>setMainArr(arr.filter((tuple)=>tuple.phoneNo.toString().startsWith(e.target.value)))}/></th>
+                    <th><input className='input input-bordered input-sm input-primary w-full' type="text" onChange={(e)=>setMainArr(arr.filter((tuple)=>tuple.planType.includes(e.target.value)))}/></th>
+                    <th><input className='input input-bordered input-sm input-primary w-full' type="text" onChange={(e)=>setMainArr(arr.filter((tuple)=>tuple.vendor.vendorName.toString().includes(e.target.value)))}/></th>
+                    <th><input className='input input-bordered input-sm input-primary w-full' type="text" onChange={(e)=>setMainArr(arr.filter((tuple)=>tuple.ICCID.toString().startsWith(e.target.value)))}/></th>
+                   
+                    <th><input className='input input-bordered input-sm input-primary w-full' type="text" onChange={(e)=>setMainArr(arr.filter((tuple)=>tuple.custody.includes(e.target.value)))}/></th>
+                    
+                    <th></th>
+                    <th></th>
+                    <th></th>
+                  </tr>
+
                 </thead>
                 <tbody>
                 {

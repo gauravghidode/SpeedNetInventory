@@ -35,30 +35,30 @@ const InventoryRow = ({ Tuple, fetchMain }) => {
     }
 
     async function updateCustody(e) {
-        try{
+        try {
             const response = await axios({
-              method: 'put',
-              url: `${BASE_URL}/v1/phoneNo/updateCustody/${connection._id}`,
-              data: {
-                custody: e.value
-              }
+                method: 'put',
+                url: `${BASE_URL}/v1/phoneNo/updateCustody/${connection._id}`,
+                data: {
+                    custody: e.value
+                }
             });
-              console.log(response);
-              if(response.data.success) {
-                  toast.success(response.data.message);
+            console.log(response);
+            if (response.data.success) {
+                toast.success(response.data.message);
             }
-            else{
-              toast.warning("custody update failed! "+ response.data.message);
+            else {
+                toast.warning("custody update failed! " + response.data.message);
             }
-          }catch(e){
-            toast.error("Something went wrong "+e.message);
-          } 
+        } catch (e) {
+            toast.error("Something went wrong " + e.message);
+        }
     }
 
     async function searchAccounts(e) {
         try {
 
-            const timer = setTimeout(async() => {
+            const timer = setTimeout(async () => {
                 const response = await axios({
                     method: 'get',
                     url: `${BASE_URL}/v1/account/searchAccounts/${e.target.value}`,
@@ -76,29 +76,29 @@ const InventoryRow = ({ Tuple, fetchMain }) => {
         }
     }
 
-    async function updateRow(e){
+    async function updateRow(e) {
 
-        try{
-          const response = await axios({
-            method: 'put',
-            url: `${BASE_URL}/v1/phoneNo/addConnection/${connection._id}`,
-            data: {
-              updatedICCID: formData2?.updatedICCID,
-              updatedAccountNo: formData2?.updatedAccountNo
-            }
-          });
+        try {
+            const response = await axios({
+                method: 'put',
+                url: `${BASE_URL}/v1/phoneNo/addConnection/${connection._id}`,
+                data: {
+                    updatedICCID: formData2?.updatedICCID,
+                    updatedAccountNo: formData2?.updatedAccountNo
+                }
+            });
             console.log(response);
-            if(response.data.success) {
+            if (response.data.success) {
                 toast.success(response.data.message);
-            fetchMain();
-          }
-          else{
-            toast.warning("Update failed! "+ response.data.message);
-          }
-        }catch(e){
-          toast.error("Something went wrong "+e.message);
-        } 
-        
+                fetchMain();
+            }
+            else {
+                toast.warning("Update failed! " + response.data.message);
+            }
+        } catch (e) {
+            toast.error("Something went wrong " + e.message);
+        }
+
     }
 
     useEffect(() => {
@@ -108,12 +108,15 @@ const InventoryRow = ({ Tuple, fetchMain }) => {
     return (
         <>
             <tr key={connection?._id}>
-                <td><button onClick={() => { onOpenModal() }}><MdEdit className='h-6 w-6' /></button></td>
+                { }
+                <td><button disabled={!(currentUser.role == 'admin' || currentUser.inventorySwap)} onClick={() => { onOpenModal() }}><MdEdit className='h-6 w-6' /></button></td>
                 <th>{connection?.phoneNo}</th>
                 <td>{connection?.planType}</td>
                 <td>{connection?.vendor?.vendorName}</td>
                 <td>{connection?.ICCID}</td>
-                <td><Select isSearchable={false} placeholder={Tuple?.custody} options={options} onChange={updateCustody}></Select></td>
+                {(currentUser.role == 'admin' || currentUser.inventorySwap) ?
+                    <td><Select disabled={!(currentUser.role == 'admin' || currentUser.inventorySwap)} isSearchable={true} placeholder={Tuple?.custody} options={options} onChange={updateCustody}></Select></td>
+                : <td>{Tuple?.custody}</td>}
                 <td>{connection?.lastUser?.username}</td>
                 <td>{moment(connection?.createdAt).fromNow()}</td>
             </tr>
@@ -140,15 +143,15 @@ const InventoryRow = ({ Tuple, fetchMain }) => {
                                         <div className="label">
                                             <span className="label-text">New Account Name: {formData2?.customerFName}</span>
                                         </div>
-                                        <input autoComplete='off' value={formData2?.customerFName} type='text' placeholder="Type here" name='customerFName' className="input input-bordered " onChange={(e)=>{searchAccounts(e); setFormData2()}} />
+                                        <input autoComplete='off' value={formData2?.customerFName} type='text' placeholder="Type here" name='customerFName' className="input input-bordered " onChange={(e) => { searchAccounts(e); setFormData2() }} />
                                         {
-                                            optionList?.map((item)=>(
-                                                <p className='border-primary border-1' onClick={()=>{setFormData2({updatedAccountNo: item?.accountNo, customerFName: item?.customerFName}); setOptionList([])}}>{item?.customerFName} : {item.accountNo}</p>
+                                            optionList?.map((item) => (
+                                                <p className='border-primary border-1' onClick={() => { setFormData2({ updatedAccountNo: item?.accountNo, customerFName: item?.customerFName }); setOptionList([]) }}>{item?.customerFName} : {item.accountNo}</p>
                                             ))
                                         }
-                                        
+
                                     </label>
-                                
+
                                     <label className="form-control w-full">
                                         <div className="label">
                                             <span className="label-text">New Account No</span>
@@ -173,11 +176,6 @@ const InventoryRow = ({ Tuple, fetchMain }) => {
                         </div>
                 }
             </Modal>
-
-
-
-
-
         </>
     )
 }

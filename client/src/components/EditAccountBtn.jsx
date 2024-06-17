@@ -167,9 +167,9 @@ const EditAccountBtn = ({ customer, accno }) => {
                                 </div>
                             </div>
 
-
+                      
                             <div className='card'>
-                                {
+                                { 
                                     (currentUser.role == 'admin' || currentUser.customerEditAndSwap) &&
 
                                     <form action="" className='' onSubmit={handleSubmit}>

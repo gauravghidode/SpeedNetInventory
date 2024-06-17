@@ -8,6 +8,8 @@ import { ToastContainer, toast } from 'react-toastify';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { FaUserPen } from "react-icons/fa6";
+import { IoMdAdd } from "react-icons/io";
+import {Modal} from 'react-responsive-modal'
 
 const BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
 
@@ -18,20 +20,49 @@ const Account = () => {
     const [currentAccount, setCurrentAccount] = useState(undefined);
     const [connections, setConnections] = useState([]);
     const [loading, setLoading] = useState();
+    const [loading2, setLoading2] = useState(false);
     const dispatch = useDispatch();
     const [updatedTime, setUpdatedTime] = useState();
     const { currentUser } = useSelector((state) => state.user);
     const [edit, setEdit] = useState(false);
 
-    // const formatter = new Intl.DateTimeFormat('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-    // const formattedTime = formatter.format(updatedTime);
+    const [open, setOpen] = useState(false);
+    const onOpenModal = () => { setOpen(true) };
+    const onCloseModal = () => setOpen(false);
+
     const [formData, setFormData] = useState({});
+    const [formData2, setFormData2] = useState();
+    const [formData3, setFormData3] = useState();
 
     function handleChange(e) {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     }
-    // console.log(formData);
 
+    function handleChange2(e) {
+        setFormData2({ ...formData2, [e.target.name]: e.target.value });
+        console.log(formData2);
+    }
+
+    async function handleSubmit2(e) {
+        e.preventDefault();
+
+        try {
+            console.log(formData2);
+            const response = await axios({
+                method: 'post',
+                url: `${BASE_URL}/v1/phoneNo/checkPhoneNumber`,
+                data: formData2,
+                withCredentials: true
+            });
+            console.log("Submit");
+            console.log(response);
+            setFormData3(response.data);
+        }
+        catch (e) {
+            console.log("Something went wrong " + e.message);
+            toast.error("Something went wrong " + e.message);
+        }
+    }
 
     async function fetchAccount() {
         try {
@@ -96,10 +127,33 @@ const Account = () => {
         }
     }
 
+    async function updatePhoneNo(e) {
+        e.preventDefault();
+        try {
+            console.log(formData3);
+            const response = await axios({
+                method: 'put',
+                url: `${BASE_URL}/v1/phoneNo/addConnection/${formData3?.phone._id}`,
+                data: { updatedICCID: formData3?.phone.ICCID, updatedAccountNo: currentAccount.accountNo },
+                withCredentials: true
+            });
+            if (response.data.success) {
+                await handleSubmit(e);
+                toast.success(response.data.message);
+            } else {
+                toast.warning(response.data.message);
+            }
+        }
+        catch (e) {
+            console.log("Something went wrong " + e.message);
+            toast.error("Something went wrong " + e.message);
+        }
+    }
+
 
     useEffect(() => {
         fetchAccount();
-    },[])
+    }, [])
 
     return (
         <div>
@@ -111,7 +165,7 @@ const Account = () => {
                         <div className='flex justify-between'>
                             <h1 className='text-2xl font-semibold text-center mb-4'>{currentAccount?.customerFName}</h1>
                             <h1 className='text-2xl font-semibold text-center mb-4'>Account No {currentAccount?.accountNo}</h1>
-                            <label htmlFor="my_modal_6" className="btn"><FaUserPen className='h-10 w-10' /></label>
+                            <button disabled={!(currentUser.role==='admin'|| currentUser.customerSwap || currentUser.customerEditAndSwap)} className='btn btn-primary' onClick={() => { onOpenModal() }}><IoMdAdd  className='h-6 w-6' />Add Connection</button>
 
                         </div>
 
@@ -142,7 +196,7 @@ const Account = () => {
                                                     <td>{Tuple?.date}</td>
                                                     <td>{Tuple?.price}</td>
                                                     {/* <td><button>Update</button></td> */}
-                                                    <td><button type='button' value={index} onClick={(e) => handleDeactivate(e)}>Deactivate</button></td>
+                                                    <td><button disabled={!(currentUser.role==='admin'|| currentUser.customerSwap || currentUser.customerEditAndSwap)} className='btn btn-secondary' type='button' value={index} onClick={(e) => handleDeactivate(e)}>Deactivate</button></td>
 
 
                                                     {/* <td><button value={index} onClick={updateRow}>Update</button></td> */}
@@ -154,80 +208,72 @@ const Account = () => {
                                 </table>
                             </div>
                         </div>
-                        {/* Open the modal using document.getElementById('ID').showModal() method */}
+                        
 
-                        <input type="checkbox" id="my_modal_6" className="modal-toggle" />
-                        <div className="modal" role="dialog">
-                            <div className="modal-box w-9/12 max-w-5xl p-10">
-                                <div className="modal-action">
-                                    <label htmlFor="my_modal_6" className="btn btn-secondary">Close</label>
-                                </div>
-                                
-                                <form action="" className='' onClick={handleSubmit} method='dialog'>
-                                    <div className='flex flex-wrap mx-auto justify-around border-primary '>
-                                        <div className='max-w-sm'>
-                                            <p>Joined {moment(currentAccount?.createdAt).fromNow()}</p>
-                                            <label className="form-control w-full">
-                                                <div className="label">
-                                                    <span className="label-text">Username</span>
-                                                </div>
-                                                <input type='text' placeholder="Type here" name='customerFName' defaultValue={currentAccount?.customerFName} className="input input-bordered " onChange={handleChange} />
-                                            </label>
 
-                                            <label className="form-control w-full">
-                                                <div className="label">
-                                                    <span className="label-text">Email</span>
-                                                </div>
-                                                <input type='email' placeholder="Type here" name='email' defaultValue={currentAccount?.email} className="input input-bordered " onChange={handleChange} />
-                                            </label>
 
-                                            <label className="form-control w-full">
-                                                <div className="label">
-                                                    <span className="label-text">Role</span>
-                                                </div>
-                                                <input type='text' placeholder="Type here" name='role' defaultValue={currentAccount?.role} className="input input-bordered " onChange={handleChange} />
-                                            </label>
+                        <Modal classNames='' open={open} onClose={onCloseModal} center>
+                            <h2>Add Connection</h2>
+                            {
+                                loading ? <p>Loading</p> :
+                                    <div>
+                                        {
+                                            currentAccount &&
+                                            <div className='card'>
+                                                <form action="" onSubmit={updatePhoneNo} className='flex'>
+                                                    <div className='p-10'>
+                                                        <label className="form-control w-full">
+                                                            <div className="label">
+                                                                <span className="label-text">New Phone No</span>
+                                                            </div>
+                                                            <input type='number' placeholder="Type here" name='phoneNo' className="input input-bordered " onChange={handleChange2} />
+                                                        </label>
 
-                                            <label className="form-control w-full">
-                                                <div className="label">
-                                                    <span className="label-text">Contact</span>
-                                                </div>
-                                                <input type='number' placeholder="Type here" name='contact' defaultValue={currentAccount?.contact} className="input input-bordered " onChange={handleChange} />
-                                            </label>
+                                                        {
+                                                            formData3?.success &&
+                                                            <div>
+                                                                <p>New Phone No: {formData3?.phone.phoneNo}</p>
+                                                                <p>New Plan Type: {formData3?.phone.planType}</p>
+                                                                {formData3?.phone?.accountStatus == 'active' ? <p className='text-red-600'>Phone no is not available</p> : <p className='text-green-600'>'Phone no is available'</p>}
 
-                                            <label className="form-control w-full">
-                                                <div className="label">
-                                                    <span className="label-text">Account Number</span>
-                                                </div>
-                                                <p>{currentAccount?.accountNo}</p>
-                                            </label>
+                                                            </div>
 
-                                            {/* <p>Last updated on {updatedTime?.toDateString()} at {formattedTime}</p> */}
-                                        </div>
+                                                        }
+                                                        <p className=' text-red-600'>{formData3?.message}</p>
 
-                                        <div>
-                                            <label className="form-control w-full">
-                                                <div className="label">
-                                                    <span className="label-text">Address</span>
-                                                </div>
-                                                <p>Street</p>
-                                                <input type='text' placeholder="Type here" name='street' defaultValue={currentAccount?.address.street} className="input input-bordered " onChange={handleChange} />
-                                                <p>City</p>
-                                                <input type='text' placeholder="Type here" name='city' defaultValue={currentAccount?.address.city} className="input input-bordered " onChange={handleChange} />
-                                                <p>Country</p>
-                                                <input type='text' placeholder="Type here" name='country' defaultValue={currentAccount?.address.country} className="input input-bordered " onChange={handleChange} />
-                                                <p>Zip</p>
-                                                <input type='number' placeholder="Type here" name='zip' defaultValue={currentAccount?.address.zip} className="input input-bordered " onChange={handleChange} />
-                                            </label>
-                                            <div className="mt-4">
-                                                <SubmitBtn className='mt-4' text={loading ? 'Updating' : 'Update'} disabled={loading}></SubmitBtn>
+
+                                                        <button type='button' className='btn btn-secondary mt-4' onClick={handleSubmit2}>Check</button>
+                                                    </div>
+                                                    <div className='p-10'>
+                                                        <label className="form-control w-full">
+                                                            <div className="label">
+                                                                <span className="label-text">New ICCID</span>
+                                                            </div>
+                                                            <input type='string' placeholder="Type here" name='ICCID' className="input input-bordered " onChange={handleChange2} />
+                                                        </label>
+                                                        {
+                                                            formData3?.success &&
+                                                            <div>
+                                                                <p>New ICCID: {formData3?.phone.ICCID}</p>
+                                                                <p>New Vendor: {formData3?.phone.vendor?.vendorName}</p>
+                                                            </div>
+
+                                                        }
+
+                                                        <div className="mt-4 w-1/2 mx-auto">
+                                                            <SubmitBtn className='mt-4' text={loading2 ? 'Updating' : 'Update'} disabled={!formData3 || !formData3.success || formData3?.phone?.accountStatus == 'active'}></SubmitBtn>
+                                                        </div>
+                                                    </div>
+                                                </form>
+
                                             </div>
-                                        </div>
-                                    </div>
-                                </form>
+                                        }
 
-                            </div>
-                        </div>
+
+                                    </div>
+                            }
+                        </Modal>
+
                     </div>
 
             }
