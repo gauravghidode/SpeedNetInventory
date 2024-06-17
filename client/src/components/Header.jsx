@@ -27,7 +27,9 @@ const Header = () => {
     <header className='bg-neutral py-2 text-neutral-content'>
         <div className="align-elements flex w-full justify-between">
           <div>
-            <button className='btn btn-sm flex-col pr-9' onClick={()=>navigate(-1)}><IoMdArrowRoundBack /><>Back</></button>
+            { currentUser && 
+              <button className='btn btn-sm flex-col pr-9' onClick={()=>navigate(-1)}><IoMdArrowRoundBack /><>Back</></button>
+            }
           </div>
         <div className="flex gap-x-6 justify-end items-center w-full">
             

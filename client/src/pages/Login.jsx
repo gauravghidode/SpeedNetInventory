@@ -53,6 +53,7 @@ const Login = () => {
 
   return (
     <section className='h-screen grid place-items-center'>
+      <img className=' w-64' src='/images/logo.jpg' alt="img" />
         <form onSubmit={handleSubmit} className='card w-96 p-8 bg-base-100 shadow-lg flex flex-col gap-y-4'>
             <h4 className='text-center text-3xl font-bold'>Login</h4>
 
@@ -74,7 +75,7 @@ const Login = () => {
                 <SubmitBtn text="Login"></SubmitBtn>
             </div>
             {/* <OAuth></OAuth> */}
-            <p className="text-center">Not a member yet? <Link to='/register' className='ml-2 link link-hover link-primary capitalize'>Sign up</Link></p>
+            {/* <p className="text-center">Not a member yet? <Link to='/register' className='ml-2 link link-hover link-primary capitalize'>Sign up</Link></p> */}
         </form>
         
     </section>
