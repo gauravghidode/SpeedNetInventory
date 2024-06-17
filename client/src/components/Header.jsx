@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import axios from 'axios'
 import { logoutSuccess } from '../redux/userSlice'
+const BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -11,7 +12,7 @@ const Header = () => {
 
   async function handleLogout() {
     try{
-      await axios.get('http://localhost:4000/v1/auth/logout');
+      await axios.get(`${BASE_URL}/v1/auth/logout`);
       dispatch(logoutSuccess());
     }
     catch(err){
