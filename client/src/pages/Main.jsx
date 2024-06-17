@@ -74,7 +74,7 @@ const Main = () => {
                   <tr className=''>
 
                     <th><input className='input input-bordered input-primary input-sm w-full' type="text" onChange={(e)=>setMainArr(arr.filter((tuple)=>tuple.newAccount.accountNo.toString().startsWith(e.target.value)))}/></th>
-                    <th><input className='input input-bordered input-sm input-primary w-full' type="text" onChange={(e)=>setMainArr(arr.filter((tuple)=>tuple.newAccount.customerFName.includes(e.target.value)))}/></th>
+                    <th><input className='input input-bordered input-sm input-primary w-full' type="text" onChange={(e)=>setMainArr(arr.filter((tuple)=>tuple.newAccount.customerFName.toLowerCase().includes(e.target.value.toLowerCase())))}/></th>
                     <th><select defaultValue='' className='input input-bordered input-sm input-primary w-full' type="text" onChange={(e)=>setMainArr(arr.filter((tuple)=>tuple.newAccount.role.includes(e.target.value)))}>
                       <option value="" defaultChecked>Both</option>
                       <option value="customer">Customer</option>
