@@ -46,6 +46,7 @@ const Admin = () => {
     return (
         <>
             <button className='btn bg-slate-400' onClick={onDownload}>Download Excel File</button>
+            <Link to='/register' className='btn ml-4 btn-secondary'>Add Employee</Link>
             {
                 mainArr ?
                     <div>

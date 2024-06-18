@@ -65,7 +65,7 @@ const Register = () => {
             <div className='mt-4'>
                 <SubmitBtn disabled={loading} text={loading? "Loading": "Register"}></SubmitBtn>
             </div>
-            <p className="text-center">Already have an account? <Link to='/login' className='ml-2 link link-hover link-primary capitalize'>Login</Link></p>
+            {/* <p className="text-center">Already have an account? <Link to='/login' className='ml-2 link link-hover link-primary capitalize'>Login</Link></p> */}
 
         </form>
     </section>
