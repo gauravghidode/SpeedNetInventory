@@ -11,6 +11,13 @@ const phoneNoSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Account',
     },
+    customerFName:{
+        type: String,
+    },
+    accountNo:{
+        type: String,
+        default:'0'
+    },
     vendor:{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'Vendor',

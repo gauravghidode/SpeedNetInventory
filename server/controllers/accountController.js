@@ -3,12 +3,17 @@ import PhoneNo from "../models/phoneNo.js";
 
 export const createAccount = async(req, res) =>{
     try{
-        const {invoiceDate, activationDate, recurringStatus} = req.body;
-        const accountNo = (await Account.find().sort({accountNo:-1}).limit(1)).at(0)?.accountNo+1 || 100000;
+        const {invoiceDate, activationDate, recurringStatus, accountNo, customerFName} = req.body;
+        if(accountNo === undefined || customerFName === undefined){
+            return res.status(200).json({success: false, message: "Please Fill all the fields again"});
+        }
+        const verify = await Account.findOne({accountNo: accountNo});
+        if(verify) {
+            return res.status(200).json({success: false, message:"Account number already exists"});
+        }
         
-        console.log(accountNo);
-        const newAccount = new Account({invoiceDate, activationDate, accountNo, recurringStatus,
-            customerFName: req.body.customerFName,
+        const newAccount = new Account({invoiceDate, activationDate, recurringStatus,
+            customerFName,
             email: req.body.email,
             contact: req.body.contact,
             address: {
@@ -17,7 +22,8 @@ export const createAccount = async(req, res) =>{
                 country: req.body.country,
                 zip: req.body.zip,
             },
-            role:req.body.role
+            role:req.body.role,
+            accountNo: accountNo
         });
         await newAccount.save();
         res.status(201).json({success: true, message: 'Account created Successfully', newAccount: newAccount});
@@ -86,24 +92,30 @@ export const getDealerAccounts = async (req, res) => {
 
 
 export const getCustomerAccounts = async (req, res) => {
-    const {accountNo, customerFName, email} = req.query;
-    var query = {role: 'customer'};
+    const {keyword, page, pageSize} = req.query;
     console.log(req.query);
-    if(accountNo && accountNo!==""){
-        query = {role: 'customer', accountNo};
-    }
-    if(customerFName && customerFName!==""){
-        query = {role: 'customer', 
-            customerFName:{
-            $regex: customerFName, 
+    const skip = pageSize * (page - 1);
+    
+    const query = {role: 'customer', 
+        $or:[
+        {
+        customerFName:{
+            $regex: keyword, 
             $options: "i", //lowercase
-        }};
-    }
-    if(email && email!==""){
-        query = {role: 'customer', email};
-    }
+        }},
+        {email:{
+            $regex: keyword, 
+            $options: "i", //lowercase
+        }},
+        {accountNo: {
+            $regex: keyword, 
+            $options: "i", //lowercase
+        }} 
+        ]    
+    };
+    
     try{
-        const accounts = await Account.find(query).populate({path: 'phoneNo', populate:{path:'vendor'}});
+        const accounts = await Account.find(query).limit(pageSize).skip(skip).populate({path: 'phoneNo', populate:{path:'vendor'}});
         res.status(200).json(accounts);
     }
     catch(e){
@@ -147,7 +159,7 @@ export const checkAccount = async(req, res)=>{
 
 export const searchAccounts = async(req, res)=>{
     try{
-        const account = await Account.find({customerFName:{ $regex: req.params.customerFName}}, {customerFName: true, accountNo: true}).limit(10);
+        const account = await Account.find({customerFName:{ $regex: req.params.customerFName, $options: "i"}}, {customerFName: true, accountNo: true}).limit(10);
         if(!account){
             res.status(404).error({message: "Account not found"});
             return;

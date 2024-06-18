@@ -1,5 +1,5 @@
 import express from 'express'
-import {updateCustody, addPhoneNo ,getAllPhoneNo, addConnection, getVendorPhoneNo, getAllActiveConnections, deactivateConnection, checkPhoneNumber} from '../controllers/phoneNoController.js';
+import {updateCustody, addPhoneNo ,getAllPhoneNo, addConnection, getVendorPhoneNo, getAllActiveConnections, deactivateConnection, checkPhoneNumber, getVendors} from '../controllers/phoneNoController.js';
 
 const router = express.Router();
 
@@ -11,6 +11,7 @@ router.get('/getAllActiveConnections', getAllActiveConnections);
 router.put('/deactivateConnection/:id', deactivateConnection);
 router.post('/checkPhoneNumber', checkPhoneNumber);
 router.put('/updateCustody/:id', updateCustody);
+router.get('/vendors', getVendors);
 
 
 export default router;
