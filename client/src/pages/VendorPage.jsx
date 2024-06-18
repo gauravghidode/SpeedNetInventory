@@ -19,7 +19,7 @@ const VendorPage = () => {
             setLoading(true);
           const response = await axios({
             method: 'get',
-            url: `${BASE_URL}/v1/card/vendors`,
+            url: `${BASE_URL}/v1/phoneNo/vendors`,
           });
           console.log(response);
           setVendors(response.data);

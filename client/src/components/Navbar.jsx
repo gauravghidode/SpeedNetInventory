@@ -3,7 +3,8 @@ import { BsMoonFill, BsSunFill } from "react-icons/bs";
 import {FaBarsStaggered} from 'react-icons/fa6'
 import { NavLink } from 'react-router-dom';
 import { useState } from 'react';
-
+import { IoMdArrowRoundBack } from "react-icons/io";
+import { useSelector } from 'react-redux';
 
 
 const getThemeFromLocalStorage = ()=>{
@@ -13,6 +14,7 @@ const getThemeFromLocalStorage = ()=>{
 
 const Navbar = () => {
     const [theme, setTheme] = useState(getThemeFromLocalStorage());
+    const {currentUser} = useSelector((state)=>state.user);
 
     function handleTheme(){
         const newTheme = theme==='winter'?'dark':'winter';
@@ -45,7 +47,9 @@ const Navbar = () => {
                         <li><NavLink to='/Admin'>Admin Panel</NavLink></li>
                     </ul>
                 </div> 
-                <NavLink to='/' className='lg:flex btn btn-primary text-3xl items-center'>SpeedNet FSM</NavLink>
+                { currentUser && 
+              <button className='btn btn-sm flex-col pr-6 btn-secondary' onClick={()=>navigate(-1)}><IoMdArrowRoundBack /><>Back</></button>
+            }
 
             </div>
             <div className="navbar-center hidden lg:flex">

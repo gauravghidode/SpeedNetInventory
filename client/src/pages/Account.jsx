@@ -9,7 +9,7 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 import { FaUserPen } from "react-icons/fa6";
 import { IoMdAdd } from "react-icons/io";
-import {Modal} from 'react-responsive-modal'
+import { Modal } from 'react-responsive-modal'
 
 const BASE_URL = import.meta.env.VITE_REACT_APP_BASE_URL;
 
@@ -24,7 +24,9 @@ const Account = () => {
     const dispatch = useDispatch();
     const [updatedTime, setUpdatedTime] = useState();
     const { currentUser } = useSelector((state) => state.user);
-    const [edit, setEdit] = useState(false);
+    const [conn, setConn] = useState([]);
+    const custody = currentUser.username;
+
 
     const [open, setOpen] = useState(false);
     const onOpenModal = () => { setOpen(true) };
@@ -74,6 +76,7 @@ const Account = () => {
             console.log(response);
             setCurrentAccount(response.data.account);
             setConnections(response.data.connections);
+            setConn(response.data.connections);
             setUpdatedTime(new Date(currentAccount?.updatedAt))
             toast.success("Customer account fetched successfully");
         }
@@ -116,7 +119,7 @@ const Account = () => {
             const response = await axios({
                 method: 'put',
                 url: `${BASE_URL}/v1/phoneNo/deactivateConnection/${id}`,
-                data: { userId, iccId, accId },
+                data: { userId, iccId, accId, custody },
                 withCredentials: true
             });
             toast.success(response.data.message);
@@ -165,7 +168,7 @@ const Account = () => {
                         <div className='flex justify-between'>
                             <h1 className='text-2xl font-semibold text-center mb-4'>{currentAccount?.customerFName}</h1>
                             <h1 className='text-2xl font-semibold text-center mb-4'>Account No {currentAccount?.accountNo}</h1>
-                            <button disabled={!(currentUser.role==='admin'|| currentUser.customerSwap || currentUser.customerEditAndSwap)} className='btn btn-primary' onClick={() => { onOpenModal() }}><IoMdAdd  className='h-6 w-6' />Add Connection</button>
+                            <button disabled={!(currentUser.role === 'admin' || currentUser.customerSwap || currentUser.customerEditAndSwap)} className='btn btn-primary' onClick={() => { onOpenModal() }}><IoMdAdd className='h-6 w-6' />Add Connection</button>
 
                         </div>
 
@@ -181,8 +184,18 @@ const Account = () => {
                                             <th>Vendor Name</th>
                                             <th>Invoice day</th>
                                             <th>Activation date</th>
-                                            <th>Price</th>
+                                            <th>CPrice</th>
                                             <th></th>
+                                        </tr>
+
+                                        <tr>
+                                        <th><input className='input input-bordered input-sm input-primary w-full' type="text" onChange={(e)=>setConnections(conn.filter((tuple)=>tuple.ICCID.toString().startsWith(e.target.value)))}/></th>
+                                        <th><input className='input input-bordered input-sm input-primary w-full' type="text" onChange={(e)=>setConnections(conn.filter((tuple)=>tuple.phoneNo.toString().startsWith(e.target.value)))}/></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
+                                        <th></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -193,10 +206,10 @@ const Account = () => {
                                                     <td>{Tuple?.phoneNo}</td>
                                                     <td>{Tuple?.vendor.vendorName}</td>
                                                     <td>{Tuple?.invoiceDay}</td>
-                                                    <td>{Tuple?.date}</td>
-                                                    <td>{Tuple?.price}</td>
+                                                    <td><input type="date"  disabled defaultValue={Tuple?.cactivationDate?.toString().slice(0,10)}/></td>
+                                                    <td>{Tuple?.cprice}</td>
                                                     {/* <td><button>Update</button></td> */}
-                                                    <td><button disabled={!(currentUser.role==='admin'|| currentUser.customerSwap || currentUser.customerEditAndSwap)} className='btn btn-secondary' type='button' value={index} onClick={(e) => handleDeactivate(e)}>Deactivate</button></td>
+                                                    <td><button disabled={!(currentUser.role === 'admin' || currentUser.customerSwap || currentUser.customerEditAndSwap)} className='btn btn-secondary' type='button' value={index} onClick={(e) => handleDeactivate(e)}>Deactivate</button></td>
 
 
                                                     {/* <td><button value={index} onClick={updateRow}>Update</button></td> */}
@@ -208,7 +221,7 @@ const Account = () => {
                                 </table>
                             </div>
                         </div>
-                        
+
 
 
 
@@ -219,53 +232,129 @@ const Account = () => {
                                     <div>
                                         {
                                             currentAccount &&
-                                            <div className='card'>
-                                                <form action="" onSubmit={updatePhoneNo} className='flex'>
-                                                    <div className='p-10'>
-                                                        <label className="form-control w-full">
-                                                            <div className="label">
-                                                                <span className="label-text">New Phone No</span>
+                                            <div>
+                                                <div className='card'>
+                                                    {
+                                                        (currentUser.role == 'admin' || currentUser.customerEditAndSwap) &&
+
+                                                        <form action="" className='' onSubmit={handleSubmit}>
+                                                            <div className='flex flex-wrap mx-auto justify-around border-primary border-b-2 '>
+                                                                <div className='max-w-sm p-10'>
+
+
+                                                                    <label className="form-control w-full">
+                                                                        <div className="label">
+                                                                            <span className="label-text">Account No</span>
+                                                                        </div>
+                                                                        <input type='string' placeholder="Type here" name='accountNo' defaultValue={currentAccount?.accountNo} className="input input-bordered " onChange={handleChange} />
+                                                                    </label>
+
+                                                                    <label className="form-control w-full">
+                                                                        <div className="label">
+                                                                            <span className="label-text">Email</span>
+                                                                        </div>
+                                                                        <input type='email' placeholder="Type here" name='email' defaultValue={currentAccount?.email} className="input input-bordered " onChange={handleChange} />
+                                                                    </label>
+
+                                                                    <label className="form-control w-full">
+                                                                        <div className="label">
+                                                                            <span className="label-text">Street</span>
+                                                                        </div>
+                                                                        <input type='text' placeholder="Type here" name='street' defaultValue={currentAccount?.address?.street} className="input input-bordered " onChange={handleChange} />
+                                                                    </label>
+
+                                                                    <label className="form-control w-full">
+                                                                        <div className="label">
+                                                                            <span className="label-text">State</span>
+                                                                        </div>
+                                                                        <input type='text' placeholder="Type here" name='country' defaultValue={currentAccount?.address?.country} className="input input-bordered " onChange={handleChange} />
+                                                                    </label>
+                                                                </div>
+
+                                                                <div className='p-10'>
+                                                                    <label className="form-control w-full">
+                                                                        <div className="label">
+                                                                            <span className="label-text">Customer Name</span>
+                                                                        </div>
+                                                                        <input type='text' placeholder="Type here" name='customerFName' defaultValue={currentAccount?.customerFName} className="input input-bordered " onChange={handleChange} />
+                                                                    </label>
+                                                                    <label className="form-control w-full">
+                                                                        <div className="label">
+                                                                            <span className="label-text">Contact</span>
+                                                                        </div>
+                                                                        <input type='number' placeholder="Type here" name='contact' defaultValue={currentAccount?.contact} className="input input-bordered " onChange={handleChange} />
+                                                                    </label>
+
+                                                                    <label className="form-control w-full">
+                                                                        <div className="label">
+                                                                            <span className="label-text">City</span>
+                                                                        </div>
+                                                                        <input type='text' placeholder="Type here" name='city' defaultValue={currentAccount?.address?.city} className="input input-bordered " onChange={handleChange} />
+                                                                    </label>
+
+                                                                    <label className="form-control w-full">
+                                                                        <div className="label">
+                                                                            <span className="label-text">Zip</span>
+                                                                        </div>
+                                                                        <input type='number' placeholder="Type here" name='zip' defaultValue={currentAccount?.address?.zip} className="input input-bordered " onChange={handleChange} />
+                                                                    </label>
+                                                                    <div className="mt-4 w-1/2 mx-auto">
+                                                                        <SubmitBtn className='mt-4' text={loading ? 'Updating' : 'Update'} disabled={loading}></SubmitBtn>
+                                                                    </div>
+                                                                </div>
                                                             </div>
-                                                            <input type='number' placeholder="Type here" name='phoneNo' className="input input-bordered " onChange={handleChange2} />
-                                                        </label>
+                                                        </form>
+                                                    }
+                                                </div>
+                                                
+                                                <div className='card'>
+                                                    <form action="" onSubmit={updatePhoneNo} className='flex'>
+                                                        <div className='p-10'>
+                                                            <label className="form-control w-full">
+                                                                <div className="label">
+                                                                    <span className="label-text">New Phone No</span>
+                                                                </div>
+                                                                <input type='number' placeholder="Type here" name='phoneNo' className="input input-bordered " onChange={handleChange2} />
+                                                            </label>
 
-                                                        {
-                                                            formData3?.success &&
-                                                            <div>
-                                                                <p>New Phone No: {formData3?.phone.phoneNo}</p>
-                                                                <p>New Plan Type: {formData3?.phone.planType}</p>
-                                                                {formData3?.phone?.accountStatus == 'active' ? <p className='text-red-600'>Phone no is not available</p> : <p className='text-green-600'>'Phone no is available'</p>}
+                                                            {
+                                                                formData3?.success &&
+                                                                <div>
+                                                                    <p>New Phone No: {formData3?.phone.phoneNo}</p>
+                                                                    <p>New Plan Type: {formData3?.phone.planType}</p>
+                                                                    {formData3?.phone?.accountStatus == 'active' ? <p className='text-red-600'>Phone no is not available</p> : <p className='text-green-600'>'Phone no is available'</p>}
 
-                                                            </div>
+                                                                </div>
 
-                                                        }
-                                                        <p className=' text-red-600'>{formData3?.message}</p>
+                                                            }
+                                                            <p className=' text-red-600'>{formData3?.message}</p>
 
 
-                                                        <button type='button' className='btn btn-secondary mt-4' onClick={handleSubmit2}>Check</button>
-                                                    </div>
-                                                    <div className='p-10'>
-                                                        <label className="form-control w-full">
-                                                            <div className="label">
-                                                                <span className="label-text">New ICCID</span>
-                                                            </div>
-                                                            <input type='string' placeholder="Type here" name='ICCID' className="input input-bordered " onChange={handleChange2} />
-                                                        </label>
-                                                        {
-                                                            formData3?.success &&
-                                                            <div>
-                                                                <p>New ICCID: {formData3?.phone.ICCID}</p>
-                                                                <p>New Vendor: {formData3?.phone.vendor?.vendorName}</p>
-                                                            </div>
-
-                                                        }
-
-                                                        <div className="mt-4 w-1/2 mx-auto">
-                                                            <SubmitBtn className='mt-4' text={loading2 ? 'Updating' : 'Update'} disabled={!formData3 || !formData3.success || formData3?.phone?.accountStatus == 'active'}></SubmitBtn>
+                                                            <button type='button' className='btn btn-secondary mt-4' onClick={handleSubmit2}>Check</button>
                                                         </div>
-                                                    </div>
-                                                </form>
+                                                        <div className='p-10'>
+                                                            <label className="form-control w-full">
+                                                                <div className="label">
+                                                                    <span className="label-text">New ICCID</span>
+                                                                </div>
+                                                                <input type='string' placeholder="Type here" name='ICCID' className="input input-bordered " onChange={handleChange2} />
+                                                            </label>
+                                                            {
+                                                                formData3?.success &&
+                                                                <div>
+                                                                    <p>New ICCID: {formData3?.phone.ICCID}</p>
+                                                                    <p>New Vendor: {formData3?.phone.vendor?.vendorName}</p>
+                                                                </div>
 
+                                                            }
+
+                                                            <div className="mt-4 w-1/2 mx-auto">
+                                                                <SubmitBtn className='mt-4' text={loading2 ? 'Updating' : 'Update'} disabled={!formData3 || !formData3.success || formData3?.phone?.accountStatus == 'active'}></SubmitBtn>
+                                                            </div>
+                                                        </div>
+                                                    </form>
+
+                                                </div>
                                             </div>
                                         }
 

@@ -10,7 +10,7 @@ import 'react-responsive-modal/styles.css';
 import { Modal } from 'react-responsive-modal';
 import { useSelector } from 'react-redux';
 
-const EditAccountBtn = ({ customer, accno }) => {
+const CustomerRow = ({ customer, accno }) => {
     // console.log(customer);
     const [open, setOpen] = useState(false);
     const onOpenModal = () => { setOpen(true) };
@@ -126,7 +126,7 @@ const EditAccountBtn = ({ customer, accno }) => {
 
     useEffect(() => {
         setCurrentAccount(customer);
-    }, []);
+    }, [customer]);
 
     return (
         <>
@@ -159,7 +159,7 @@ const EditAccountBtn = ({ customer, accno }) => {
                                     <p>Customer Name: {currentAccount.customerFName}</p>
                                     <p>ICCID: {currentAccount.phoneNo?.ICCID}</p>
                                     <p>Vendor Name: {currentAccount.phoneNo?.vendor?.vendorName}</p>
-                                    {console.log(currentUser.customerSwap)}
+                                    {/* {console.log(currentUser.customerSwap)} */}
                                     {
                                         (currentUser.role == 'admin' || currentUser.customerEditAndSwap || currentUser.customerSwap) &&
                                         <button onClick={handleDeactivate} className='btn btn-secondary mt-4' disabled={!currentAccount?.phoneNo?.accountStatus || currentAccount?.phoneNo?.accountStatus === 'inactive'}>Deactivate Connection</button>
@@ -181,7 +181,7 @@ const EditAccountBtn = ({ customer, accno }) => {
                                                     <div className="label">
                                                         <span className="label-text">Account No</span>
                                                     </div>
-                                                    <input type='number' placeholder="Type here" name='accountNo' defaultValue={currentAccount?.accountNO} className="input input-bordered " onChange={handleChange} />
+                                                    <input type='string' placeholder="Type here" name='accountNo' defaultValue={currentAccount?.accountNO} className="input input-bordered " onChange={handleChange} />
                                                 </label>
 
                                                 <label className="form-control w-full">
@@ -244,7 +244,7 @@ const EditAccountBtn = ({ customer, accno }) => {
 
 
                             <div className='card'>
-                                {console.log(  currentUser)}
+                                {/* {console.log(  currentUser)} */}
                                 {
                                 (currentUser.role=='admin' || currentUser.customerEditAndSwap || currentUser.customerSwap)&&
                             
@@ -307,4 +307,4 @@ const EditAccountBtn = ({ customer, accno }) => {
     )
 }
 
-export default EditAccountBtn
+export default CustomerRow

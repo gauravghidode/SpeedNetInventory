@@ -44,8 +44,11 @@ const AddAccountBtn = ({role}) => {
             });
             console.log(response);
             if(response.data.success){
-                toast.success("Dealer added successfully");
+                toast.success("Account created successfully");
                 setCurrentAccount(response.data.newAccount);
+            }
+            else{
+                toast.warning(response.data.message);
             }
             
         }
@@ -120,7 +123,7 @@ const AddAccountBtn = ({role}) => {
                                                 <div className="label">
                                                     <span className="label-text">Account No</span>
                                                 </div>
-                                                <input type='number' placeholder="Type here" name='accountNo' defaultValue={currentAccount?.accountNO} className="input input-bordered " onChange={handleChange} />
+                                                <input type='string' placeholder="Type here" name='accountNo' defaultValue={currentAccount?.accountNO} className="input input-bordered " onChange={handleChange} />
                                             </label>
 
                                             <label className="form-control w-full">

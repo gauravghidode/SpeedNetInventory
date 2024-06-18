@@ -19,10 +19,10 @@ const App = () => {
         {/* <Route path='/*' element={<LeftSideBar></LeftSideBar>} errorElement={<Error></Error>}> */}
         <Route element={<LoginPrivateRoute></LoginPrivateRoute>}>
           <Route path='/*' element={<HomeLayout></HomeLayout>} errorElement={<Error></Error>}>
+
         </Route>
           
         </Route>
-        <Route path='/register' element={<Register></Register>}></Route>
         <Route path='/login' element={<Login></Login>}></Route>
         <Route path='*' element={<Error></Error>}></Route>
       </Routes>

@@ -103,7 +103,8 @@ const InventoryRow = ({ Tuple, fetchMain }) => {
 
     useEffect(() => {
         setConnection(Tuple);
-    })
+        console.log("Connection established");
+    },[Tuple]);
 
     return (
         <>

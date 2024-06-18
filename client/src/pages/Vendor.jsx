@@ -20,7 +20,6 @@ const Vendor = () => {
   const [vendor, setVendor] = useState(undefined);
   const vendorId = id;
   const [formData, setFormData] = useState({});
-  const optionList = [];
   const { currentUser } = useSelector((state) => state.user);
 
   function handleChange(e) {
@@ -45,7 +44,7 @@ const Vendor = () => {
         }
       });
       toast.success('update successful');
-      fetchMain();
+      // fetchMain();
     }
     catch (e) {
       toast.error("Update failed " + e.message);
@@ -118,13 +117,6 @@ const Vendor = () => {
   return (
     <>
       {/* <input type="file" onChange={handleFileUpload} /> */}
-      <input
-        type="file"
-        name="upload"
-        id="upload"
-        onChange={readUploadFile}
-      />
-
       <ExcelToJson></ExcelToJson>
       {
         mainArr ?
@@ -149,6 +141,19 @@ const Vendor = () => {
                   </thead>
                   <tbody>
                     {
+                        <tr>
+                        <td><input onChange={handleChange} name='planType' type='text' className='input input-bordered'></input></td>
+                        <td><input onChange={handleChange} name='ICCID' type='text' className='input input-bordered'></input></td>
+                        <td><input onChange={handleChange} name='phoneNo' type='text' className='input input-bordered'></input></td>
+                        <td><input onChange={handleChange} name='price' type='number' className='input input-bordered'></input></td>
+                        <td><input onChange={handleChange} name='date' type='date' className='input input-bordered'></input></td>
+                        <td></td>
+                        <td></td>
+                        <td><button value='' onClick={addEntry} className='btn btn-accent'>Add</button></td>
+                        </tr>
+                    }
+                    
+                    {
                       mainArr.map((Tuple, index) => (
                         <tr key={Tuple._id}>
 
@@ -156,7 +161,7 @@ const Vendor = () => {
 
                           <td><input type="text" defaultValue={Tuple?.ICCID} onChange={(e) => mainArr[index].ICCID = e.target.value} /></td>
                           <td>{Tuple?.phoneNo}</td>
-                          <td>$<input type='number' onChange={(e) => mainArr[index].tuplePrice = e.target.value} defaultValue={Tuple?.price}></input></td>
+                          <td>$<input type='number' onChange={(e) => mainArr[index].price = e.target.value} defaultValue={Tuple?.price}></input></td>
 
                           <td><input type='date' name="" id="" defaultValue={new Date(Tuple.date).toISOString().slice(0, 10)} /></td>
 
@@ -166,16 +171,7 @@ const Vendor = () => {
                         </tr>
                       ))
                     }
-                    <tr>
-                      <td><input onChange={handleChange} name='planType' type='text' className='input input-bordered'></input></td>
-                      <td><input onChange={handleChange} name='ICCID' type='text' className='input input-bordered'></input></td>
-                      <td><input onChange={handleChange} name='phoneNo' type='text' className='input input-bordered'></input></td>
-                      <td><input onChange={handleChange} name='price' type='number' className='input input-bordered'></input></td>
-                      <td><input onChange={handleChange} name='date' type='text' className='input input-bordered'></input></td>
-                      <td></td>
-                      <td></td>
-                      <td><button value='' onClick={addEntry} className='btn btn-accent'>Add</button></td>
-                    </tr>
+                    
                   </tbody>
                 </table>
               </div>

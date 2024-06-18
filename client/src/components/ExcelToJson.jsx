@@ -58,13 +58,13 @@ const ExcelToJson = () => {
 
     return (
         <div>
+            <button className='btn btn-secondary btn-sm mr-5' onClick={addEntry}>Upload</button>
             <input
                 type="file"
                 name="upload"
                 id="upload"
                 onChange={readUploadFile}
             />
-            <button onClick={addEntry}>click</button>
         </div>
     )
 }
